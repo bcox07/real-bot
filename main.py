@@ -69,6 +69,23 @@ execute_dict = {
 }
 
 class MyView(discord.ui.View):
+
+    @discord.ui.select(
+        placeholder="Map", 
+        options = [
+            discord.SelectOption(label="Anubis", value="anubis"),
+            discord.SelectOption(label="Ancient", value="ancient"),
+            discord.SelectOption(label="Dust2", value="dust2"),
+            discord.SelectOption(label="Inferno", value="inferno"),
+            discord.SelectOption(label="Mirage", value="mirage"),
+            discord.SelectOption(label="Nuke", value="nuke"),
+            discord.SelectOption(label="Vertigo", value="vertigo")
+        ]
+    )
+    async def select_callback(self, select, interaction):
+        print(f"You selected a map crip! {select.values[0]}")
+        await interaction.response.defer()   
+
     @discord.ui.button(label="Click me!", style=discord.ButtonStyle.success)
     async def button_callback(self, button, interaction):
         await interaction.response.send_message("You clicked the button!")
