@@ -1,10 +1,9 @@
 import os
 import discord
-import asyncio
 
 from discord import ui
-from dotenv import load_dotenv
 from discord.ext import commands
+from dotenv import load_dotenv
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -69,8 +68,18 @@ execute_dict = {
     }
 }
 
+class MyView(discord.ui.View):
+    @discord.ui.button(label="Click me!", style=discord.ButtonStyle.success)
+    async def button_callback(self, button, interaction):
+        await interaction.response.send_message("You clicked the button!")
 
+@bot.event
+async def on_ready():
+    print(f"{bot.user} is ready and online!")
 
+@bot.command()
+async def button(ctx):
+    await ctx.send(f"Press the button! View persistence status: {MyView.is_persistent(MyView())}", view=MyView())
 
 @bot.command()
 async def execute(ctx):
