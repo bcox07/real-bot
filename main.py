@@ -1,5 +1,6 @@
 import os
 import discord
+import asyncio
 
 from discord import ui
 from dotenv import load_dotenv
@@ -19,10 +20,10 @@ executedict = {
     "anubis": {
         "t": {
             "a": {
-                "smoke1" : "https://csnades.gg/anubis/smokes/heaven-from-t-upper",
-                "smoke2" : "https://csnades.gg/anubis/smokes/platform-from-water",
+                "smoke1" : "./clips/anubis-heaven-from-rugs.mp4",
+                "smoke2" : "./clips/anubis-connector-from-rugs.gif",
                 "smoke3" : "https://csnades.gg/anubis/smokes/connector-from-t-upper",
-                "molly" : "https://csnades.gg/anubis/molotovs/a-site-from-water",
+                "molly" : "./clips/anubis-a-molly.gif",
                 "flash" : "https://csnades.gg/anubis/flashbangs/a-site-from-water"
             },
             "b": {
@@ -96,15 +97,16 @@ async def execute(ctx):
     ])
 
     async def select_callback(interaction: discord.Interaction):
-        if not mapSelect.values or not siteSelect.values or not sideSelect.values:
-            await interaction.response.defer()
-        else:
+        await interaction.response.defer()
+        if mapSelect.values and siteSelect.values and sideSelect.values:
             selectedExecute = get_execute(mapSelect.values[0], siteSelect.values[0], sideSelect.values[0])
-            print(selectedExecute)
-            await interaction.response.send_message(selectedExecute['smoke1'])
-            await interaction.followup.send(selectedExecute['smoke2'])
+            with open(selectedExecute['smoke1'], 'rb') as file:
+                await interaction.followup.send(file=discord.File(file, 'file.mp4'))
+            with open(selectedExecute['smoke2'], 'rb') as file:
+                await interaction.followup.send(file=discord.File(file, 'file.gif'))
             await interaction.followup.send(selectedExecute['smoke3'])
-            await interaction.followup.send(selectedExecute['molly'])
+            with open(selectedExecute['molly'], 'rb') as file:
+                await interaction.followup.send(file=discord.File(file, 'file.gif'))
             await interaction.followup.send(selectedExecute['flash'])
 
     mapSelect.callback = select_callback
