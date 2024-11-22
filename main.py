@@ -122,7 +122,7 @@ async def execute(ctx):
 
 
 def get_execute(map, site, side):
-    return executedict[map][side][site]
+    return execute_dict[map][side][site]
         
 
 bot.run(TOKEN)
