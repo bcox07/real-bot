@@ -16,7 +16,7 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 maps = {'anubis', 'ancient', 'dust2', 'inferno', 'mirage', 'nuke', 'vertigo'}
 sites = {'a', 'b', 'mid'}
 
-executedict = {
+execute_dict = {
     "anubis": {
         "t": {
             "a": {
