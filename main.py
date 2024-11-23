@@ -1,6 +1,8 @@
 import os
 import discord
+import asyncio
 
+from executes import execute_dict
 from discord import ui
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -11,140 +13,94 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="!", intents=intents)
 
+selected_map = ''
+selected_site = ''
+selected_side = ''
 
-maps = {'anubis', 'ancient', 'dust2', 'inferno', 'mirage', 'nuke', 'vertigo'}
-sites = {'a', 'b', 'mid'}
+async def print_selected():
+    print(f'Map: {selected_map}')
+    print(f'Site: {selected_site}')
+    print(f'Side: {selected_side}')
 
-execute_dict = {
-    "anubis": {
-        "t": {
-            "a": {
-                "smoke1" : "./clips/anubis-heaven-from-rugs.mp4",
-                "smoke2" : "./clips/anubis-connector-from-rugs.gif",
-                "smoke3" : "https://csnades.gg/anubis/smokes/connector-from-t-upper",
-                "molly" : "./clips/anubis-a-molly.gif",
-                "flash" : "https://csnades.gg/anubis/flashbangs/a-site-from-water"
-            },
-            "b": {
-                "smoke1" : "https://csnades.gg/anubis/smokes/b-site-from-ruins-d",
-                "smoke2" : "https://csnades.gg/anubis/smokes/temple-from-ruins-b",
-                "smoke3" : "https://csnades.gg/anubis/smokes/ebox-from-ruins-b",
-                "molly" : "https://csnades.gg/anubis/molotovs/b-pillar-from-ruins-b",
-                "flash" : "https://csnades.gg/anubis/flashbangs/b-site-from-ruins"
-            },
-            "mid": {
-                "smoke1" : "https://csnades.gg/anubis/smokes/top-mid-from-t-spawn-b",
-                "smoke2" : "https://csnades.gg/anubis/smokes/canals-from-t-spawn-b",
-                "smoke3" : "https://csnades.gg/anubis/smokes/mid-b-door-from-street",
-                "molly" : "https://csnades.gg/anubis/molotovs/mid-doors-from-bridge",
-                "flash" : "https://csnades.gg/anubis/flashbangs/bridge-from-ruins",
-            }
-        }
-    },
-    "mirage": {
-        "t": {
-            "a": {
-                "smoke1" : "https://csnades.gg/mirage/smokes/jungle-from-a-ramp",
-                "smoke2" : "https://csnades.gg/mirage/smokes/top-of-ticket-booth-from-a-ramp",
-                "smoke3" : "https://csnades.gg/mirage/smokes/stairs-from-a-ramp",
-                "molly" : "https://csnades.gg/mirage/molotovs/dark-from-palace-safe",
-                "flash" : "https://csnades.gg/mirage/flashbangs/a-ramp-from-a-ramp"
-            },
-            "b": {
-                "smoke1" : "https://csnades.gg/mirage/smokes/market-door-from-back-alley",
-                "smoke2" : "https://csnades.gg/mirage/smokes/market-window-from-back-alley",
-                "smoke3" : "https://csnades.gg/mirage/smokes/right-arch-from-back-alley",
-                "molly" : "https://csnades.gg/mirage/molotovs/bench-from-b-apts",
-                "flash" : "https://csnades.gg/mirage/flashbangs/b-site-from-back-apts"
-            },
-            "mid": {
-                "smoke1" : "https://csnades.gg/mirage/smokes/market-door-from-back-alley",
-                "smoke2" : "https://csnades.gg/mirage/smokes/market-window-from-back-alley",
-                "smoke3" : "https://csnades.gg/mirage/smokes/right-arch-from-back-alley",
-                "molly" : "https://csnades.gg/mirage/flashbangs/b-site-from-back-apts",
-                "flash" : "https://csnades.gg/mirage/flashbangs/b-site-from-back-apts",
-            }
-        }
-    }
-}
+async def set_selected(interaction: discord.Interaction):
+    if len(selected_map) > 0 and len(selected_site) > 0 and len(selected_side) > 0:
+        await return_execute(interaction)
+    else:
+        await interaction.response.defer()
+
+async def return_execute(interaction: discord.Interaction):
+    selected_side_description = 'Terrorist' if selected_side == 't' else 'Counter Terrorist'
+    await interaction.response.send_message(f'Generating {selected_side_description} {selected_site.upper()} Site execute on {selected_map} . . .')
+    selectedExecute = get_execute(selected_map, selected_site, selected_side)
+
+
+    for key, value in selectedExecute.items():
+        if len(value['clip']) > 0:
+            with open(value['clip'], 'rb') as file:
+                await interaction.followup.send(content=f'{key} for {value['location']} on {selected_site.upper()} site', file=discord.File(file, 'file.gif'), ephemeral=True)
+        else:
+            await interaction.followup.send(f'No {key} lineup for {selected_side_description} {selected_site.upper()} Site recorded yet. :frowning:',ephemeral=True)
+
 
 class MyView(discord.ui.View):
 
     @discord.ui.select(
         placeholder="Map", 
+        row=0,
         options = [
-            discord.SelectOption(label="Anubis", value="anubis"),
-            discord.SelectOption(label="Ancient", value="ancient"),
-            discord.SelectOption(label="Dust2", value="dust2"),
-            discord.SelectOption(label="Inferno", value="inferno"),
-            discord.SelectOption(label="Mirage", value="mirage"),
-            discord.SelectOption(label="Nuke", value="nuke"),
-            discord.SelectOption(label="Vertigo", value="vertigo")
+            discord.SelectOption(label="Anubis", value="Anubis"),
+            discord.SelectOption(label="Ancient", value="Ancient"),
+            discord.SelectOption(label="Dust2", value="Dust2"),
+            discord.SelectOption(label="Inferno", value="Inferno"),
+            discord.SelectOption(label="Mirage", value="Mirage"),
+            discord.SelectOption(label="Nuke", value="Nuke"),
+            discord.SelectOption(label="Vertigo", value="Vertigo")
         ]
     )
     async def select_callback(self, select, interaction):
-        print(f"You selected a map crip! {select.values[0]}")
-        await interaction.response.defer()   
+        global selected_map
+        selected_map = select.values[0]
+        await set_selected(interaction)
 
-    @discord.ui.button(label="Click me!", style=discord.ButtonStyle.success)
-    async def button_callback(self, button, interaction):
-        await interaction.response.send_message("You clicked the button!")
+    @discord.ui.button(label="A Site", row=1, style=discord.ButtonStyle.blurple)
+    async def a_site_callback(self, button, interaction):
+        global selected_site
+        selected_site = 'a'
+        await set_selected(interaction)
+
+    @discord.ui.button(label="B Site", row=1, style=discord.ButtonStyle.blurple)
+    async def b_site_callback(self, button, interaction):
+        global selected_site
+        selected_site = 'b'
+        await set_selected(interaction)
+
+    @discord.ui.button(label="Mid Site", row=1, style=discord.ButtonStyle.blurple)
+    async def mid_site_callback(self, button, interaction):
+        global selected_site
+        selected_site = 'mid'
+        await set_selected(interaction)
+
+    @discord.ui.button(label="Terrorist", row=2, style=discord.ButtonStyle.red)
+    async def t_callback(self, button, interaction):
+        global selected_side
+        selected_side = 't'
+        await set_selected(interaction)
+
+    @discord.ui.button(label="Counter Terrorist", row=2, style=discord.ButtonStyle.green)
+    async def ct_callback(self, button, interaction):
+        global selected_side
+        selected_side = 'ct'
+        await set_selected(interaction)
+
 
 @bot.event
 async def on_ready():
     print(f"{bot.user} is ready and online!")
 
-@bot.command()
-async def button(ctx):
-    await ctx.send(f"Press the button! View persistence status: {MyView.is_persistent(MyView())}", view=MyView())
 
 @bot.command()
 async def execute(ctx):
-
-    mapSelect = ui.Select(placeholder="Map", options=[
-        discord.SelectOption(label="Anubis", value="anubis"),
-        discord.SelectOption(label="Ancient", value="ancient"),
-        discord.SelectOption(label="Dust2", value="dust2"),
-        discord.SelectOption(label="Inferno", value="inferno"),
-        discord.SelectOption(label="Mirage", value="mirage"),
-        discord.SelectOption(label="Nuke", value="nuke"),
-        discord.SelectOption(label="Vertigo", value="vertigo")
-    ])
-
-    siteSelect = ui.Select(placeholder="Site", options = [
-        discord.SelectOption(label="A Site", value="a"),
-        discord.SelectOption(label="B Site", value="b"),
-        discord.SelectOption(label="Mid", value="mid"),
-    ])
-
-    sideSelect = ui.Select(placeholder="Side", options = [
-        discord.SelectOption(label="T Side", value="t"),
-        discord.SelectOption(label="CT Side", value="ct")
-    ])
-
-    async def select_callback(interaction: discord.Interaction):
-        await interaction.response.defer()
-        if mapSelect.values and siteSelect.values and sideSelect.values:
-            selectedExecute = get_execute(mapSelect.values[0], siteSelect.values[0], sideSelect.values[0])
-            with open(selectedExecute['smoke1'], 'rb') as file:
-                await interaction.followup.send(file=discord.File(file, 'file.mp4'))
-            with open(selectedExecute['smoke2'], 'rb') as file:
-                await interaction.followup.send(file=discord.File(file, 'file.gif'))
-            await interaction.followup.send(selectedExecute['smoke3'])
-            with open(selectedExecute['molly'], 'rb') as file:
-                await interaction.followup.send(file=discord.File(file, 'file.gif'))
-            await interaction.followup.send(selectedExecute['flash'])
-
-    mapSelect.callback = select_callback
-    siteSelect.callback = select_callback
-    sideSelect.callback = select_callback
-
-    view = ui.View()
-    view.add_item(mapSelect)
-    view.add_item(siteSelect)
-    view.add_item(sideSelect)
-
-    await ctx.send("You're such a cracker!", view=view)
+    await ctx.send(f"You still a crackr! ", view=MyView(), delete_after=30)
 
 
 def get_execute(map, site, side):
