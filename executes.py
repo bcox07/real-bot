@@ -4,7 +4,7 @@ execute_dict = {
             'a': {
                 'Smoke 1': {
                     'location': 'Heaven',
-                    'clip': ''
+                    'clip': './clips/anubis/heaven-from-rugs.gif'
                 },
                 'Smoke 2': {
                     'location': 'Connector',
@@ -25,24 +25,24 @@ execute_dict = {
             },
             'b': {
                 'Smoke 1': {
-                    'location': 'Heaven',
-                    'clip': ''
+                    'location': 'Cubby',
+                    'clip': './clips/anubis/cubby-from-b-main.gif'
                 },
                 'Smoke 2': {
                     'location': 'Connector',
-                    'clip': './clips/anubis/connector-from-rugs.gif'
+                    'clip': './clips/anubis/connector-from-b-main.gif'
                 },
                 'Smoke 3': {
-                    'location': 'Camera',
-                    'clip': './clips/anubis/camera-from-water.gif'
+                    'location': 'CT',
+                    'clip': './clips/anubis/ct-from-b-main.gif'
                 },
                 'Molly': {
-                    'location': 'Back Site',
-                    'clip': './clips/anubis/a-molly.gif'
+                    'location': 'Pillar',
+                    'clip': './clips/anubis/b-molly.gif'
                 },
                 'Flash': {
                     'location': 'Site',
-                    'clip': './clips/anubis/a-flash.gif'
+                    'clip': './clips/anubis/b-flash.gif'
                 }
             },
             'mid': {
@@ -95,25 +95,23 @@ execute_dict = {
     'Ancient': {
         't': {
             'a': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+                'Smoke 1': { 'location': 'CT', 'clip': './clips/ancient/a-ct-smoke.gif'},
+                'Smoke 2': { 'location': 'Donut', 'clip': './clips/ancient/a-donut-smoke.gif'},
+                'Smoke 3': { 'location': 'Tunnel', 'clip': './clips/ancient/a-tunnel-smoke.gif'},
+                'Molly': { 'location': 'Boxes', 'clip': './clips/ancient/a-box-molly.gif'},
+                'Flash': { 'location': 'Site', 'clip': './clips/ancient/a-flash.gif'}
             },
             'b': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+                'Smoke 1': { 'location': 'CT', 'clip': './clips/ancient/b-ct-smoke.gif'},
+                'Smoke 2': { 'location': 'Short', 'clip': './clips/ancient/b-short-smoke.gif'},
+                'Smoke 3': { 'location': 'Tunnel', 'clip': './clips/ancient/b-tunnel-smoke.gif'},
+                'Molly': { 'location': 'Site', 'clip': './clips/ancient/b-molly.gif'},
+                'Flash': { 'location': 'Site', 'clip': './clips/ancient/b-flash.gif'}
             },
             'mid': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+                'Smoke 1': { 'location': 'Red', 'clip': './clips/ancient/red-smoke.gif'},
+                'Smoke 2': { 'location': 'Cat', 'clip': './clips/ancient/cat-smoke.gif'},
+                'Flash': { 'location': 'Mid', 'clip': './clips/ancient/mid-flash.gif'}
             }
         },
         'ct': {

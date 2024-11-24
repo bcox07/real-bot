@@ -30,17 +30,17 @@ async def set_selected(interaction: discord.Interaction):
 
 async def return_execute(interaction: discord.Interaction):
     selected_side_description = 'Terrorist' if selected_side == 't' else 'Counter Terrorist'
-    await interaction.response.send_message(f'Generating {selected_side_description} {selected_site.upper()} Site execute on {selected_map} . . .')
     selectedExecute = get_execute(selected_map, selected_site, selected_side)
 
-
+    await interaction.message.delete()
+    await interaction.response.send_message(f'Generating {selected_side_description} {selected_site.upper()} Site execute on {selected_map} . . .', delete_after=890)
+    
     for key, value in selectedExecute.items():
         if len(value['clip']) > 0:
             with open(value['clip'], 'rb') as file:
-                await interaction.followup.send(content=f'{key} for {value['location']} on {selected_site.upper()} site', file=discord.File(file, 'file.gif'), ephemeral=True)
+                await interaction.followup.send(content=f'{key} for {value['location']} on {selected_site.upper()} site', file=discord.File(file, 'file.gif'), delete_after=890)
         else:
-            await interaction.followup.send(f'No {key} lineup for {selected_side_description} {selected_site.upper()} Site recorded yet. :frowning:',ephemeral=True)
-
+            await interaction.followup.send(f'No {key} lineup for {selected_side_description} {selected_site.upper()} Site recorded yet. :frowning:', delete_after=890)
 
 class MyView(discord.ui.View):
 
@@ -97,11 +97,23 @@ class MyView(discord.ui.View):
 async def on_ready():
     print(f"{bot.user} is ready and online!")
 
-
 @bot.command()
 async def execute(ctx):
-    await ctx.send(f"You still a crackr! ", view=MyView(), delete_after=30)
+    await ctx.send(f"You still a crackr! ", view=MyView(), delete_after=890)
+    await ctx.message.delete()
 
+@bot.command()
+async def clear_history(ctx):
+    channel = bot.get_channel(ctx.channel.id)
+    messages = await channel.history(limit=500).flatten()
+
+    await ctx.send('Clearing messages. . .', delete_after=300)
+    index = 1
+    for message in messages:
+        await message.delete()
+        print(f'Message {index} deleted')
+        index += 1
+        
 
 def get_execute(map, site, side):
     return execute_dict[map][side][site]
