@@ -33,14 +33,15 @@ async def return_execute(interaction: discord.Interaction):
     selectedExecute = get_execute(selected_map, selected_site, selected_side)
 
     await interaction.message.delete()
-    await interaction.response.send_message(f'Generating {selected_side_description} {selected_site.upper()} Site execute on {selected_map} . . .', delete_after=890)
+    await interaction.response.send_message(f'Generating {selected_side_description} {selected_site.upper()} Site execute on {selected_map} . . .', delete_after=60)
     
     for key, value in selectedExecute.items():
         if len(value['clip']) > 0:
             with open(value['clip'], 'rb') as file:
-                await interaction.followup.send(content=f'{key} for {value['location']} on {selected_site.upper()} site', file=discord.File(file, 'file.gif'), delete_after=890)
+                await interaction.followup.send(content=f'{key} for {value['location']} on {selected_site.upper()} site', file=discord.File(file, 'file.gif'), delete_after=600)
         else:
-            await interaction.followup.send(f'No {key} lineup for {selected_side_description} {selected_site.upper()} Site recorded yet. :frowning:', delete_after=890)
+            await interaction.followup.send(f'No {key} lineup for {selected_side_description} {selected_site.upper()} Site recorded yet. :frowning:', delete_after=600)
+
 
 class MyView(discord.ui.View):
 
