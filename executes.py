@@ -1,370 +1,330 @@
 execute_dict = {
     'Anubis': {
-        't': {
-            'a': {
-                'Smoke 1': {
-                    'location': 'Heaven',
-                    'clip': './clips/anubis/heaven-from-rugs.gif'
-                },
-                'Smoke 2': {
-                    'location': 'Connector',
-                    'clip': './clips/anubis/connector-from-rugs.gif'
-                },
-                'Smoke 3': {
-                    'location': 'Camera',
-                    'clip': './clips/anubis/camera-from-water.gif'
-                },
-                'Molly': {
-                    'location': 'Back Site',
-                    'clip': './clips/anubis/a-molly.gif'
-                },
-                'Flash': {
-                    'location': 'Site',
-                    'clip': './clips/anubis/a-flash.gif'
-                }
+        'T': {
+            'A': {
+                'Smokes': [
+                    { 'location': 'Heaven', 'clip': 'heaven-from-rugs.gif' },
+                    { 'location': 'Connector','clip': 'connector-from-rugs.gif' },
+                    { 'location': 'Camera','clip': 'camera-from-water.gif' }
+                ],
+                'Mollies': [
+                    { 'location': 'Back Site', 'clip': 'a-molly.gif' }
+                ],
+                'Flashes':[
+                  { 'location': 'Site', 'clip': 'a-flash.gif' }
+                ]
             },
-            'b': {
-                'Smoke 1': {
-                    'location': 'Cubby',
-                    'clip': './clips/anubis/cubby-from-b-main.gif'
-                },
-                'Smoke 2': {
-                    'location': 'Connector',
-                    'clip': './clips/anubis/connector-from-b-main.gif'
-                },
-                'Smoke 3': {
-                    'location': 'CT',
-                    'clip': './clips/anubis/ct-from-b-main.gif'
-                },
-                'Molly': {
-                    'location': 'Pillar',
-                    'clip': './clips/anubis/b-molly.gif'
-                },
-                'Flash': {
-                    'location': 'Site',
-                    'clip': './clips/anubis/b-flash.gif'
-                }
+            'B': {
+                'Smokes': [
+                    {'location': 'Cubby', 'clip': 'cubby-from-b-main.gif' },
+                    {'location': 'Connector','clip': 'connector-from-b-main.gif' },
+                    {'location': 'CT','clip': 'ct-from-b-main.gif' }
+                ],
+                'Mollies': [
+                    { 'location': 'Pillar', 'clip': 'b-molly.gif' }
+                ],
+                'Flashes':[
+                  { 'location': 'Site', 'clip': 'b-flash.gif' }
+                ]
             },
-            'mid': {
-                'Smoke 1': {
-                    'location': 'Heaven',
-                    'clip': ''
-                },
-                'Smoke 2': {
-                    'location': 'Connector',
-                    'clip': './clips/anubis/connector-from-rugs.gif'
-                },
-                'Smoke 3': {
-                    'location': 'Camera',
-                    'clip': './clips/anubis/camera-from-water.gif'
-                },
-                'Molly': {
-                    'location': 'Back Site',
-                    'clip': './clips/anubis/a-molly.gif'
-                },
-                'Flash': {
-                    'location': 'Site',
-                    'clip': './clips/anubis/a-flash.gif'
-                }
+            'Mid': {
+                'Smokes': [
+                    {'location': 'Connector', 'clip': 'connector-from-rugs.gif' },
+                    {'location': 'Camera','clip': 'camera-from-water.gif' },
+                ],
+                'Mollies': [
+                    { 'location': 'Back Site', 'clip': 'a-molly.gif' }
+                ],
+                'Flashes':[
+                  { 'location': 'Site', 'clip': 'a-flash.gif' }
+                ]
             }
         },
-        'ct': {
-            'a': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+        'CT': {
+            'A': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             },
-            'b': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+            'B': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             },
-            'mid': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+            'Mid': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             }
         }
     },
     'Ancient': {
-        't': {
-            'a': {
-                'Smoke 1': { 'location': 'CT', 'clip': './clips/ancient/a-ct-smoke.gif'},
-                'Smoke 2': { 'location': 'Donut', 'clip': './clips/ancient/a-donut-smoke.gif'},
-                'Smoke 3': { 'location': 'Tunnel', 'clip': './clips/ancient/a-tunnel-smoke.gif'},
-                'Molly': { 'location': 'Boxes', 'clip': './clips/ancient/a-box-molly.gif'},
-                'Flash': { 'location': 'Site', 'clip': './clips/ancient/a-flash.gif'}
+        'T': {
+            'A': {
+                'Smokes': [
+                    { 'location': 'CT', 'clip': 'a-ct-smoke.gif' },
+                    { 'location': 'Donut', 'clip': 'a-donut-smoke.gif' },
+                    { 'location': 'Tunnel', 'clip': 'a-tunnel-smoke.gif' }
+                ],
+                'Mollies': [
+                    { 'location': 'Boxes', 'clip': 'a-box-molly.gif' }
+                ],
+                'Flashes':[
+                  { 'location': 'Site', 'clip': 'a-flash.gif'}
+                ]
             },
-            'b': {
-                'Smoke 1': { 'location': 'CT', 'clip': './clips/ancient/b-ct-smoke.gif'},
-                'Smoke 2': { 'location': 'Short', 'clip': './clips/ancient/b-short-smoke.gif'},
-                'Smoke 3': { 'location': 'Tunnel', 'clip': './clips/ancient/b-tunnel-smoke.gif'},
-                'Molly': { 'location': 'Site', 'clip': './clips/ancient/b-molly.gif'},
-                'Flash': { 'location': 'Site', 'clip': './clips/ancient/b-flash.gif'}
+            'B': {
+                'Smokes': [
+                    { 'location': 'CT', 'clip': 'b-ct-smoke.gif' },
+                    { 'location': 'Short', 'clip': 'b-short-smoke.gif' },
+                    { 'location': 'Tunnel', 'clip': 'b-tunnel-smoke.gif' },
+                ],
+                'Mollies': [
+                    { 'location': 'Site', 'clip': 'b-molly.gif' },
+                ],
+                'Flashes':[
+                  { 'location': 'Site', 'clip': 'b-flash.gif' }
+                ]
             },
-            'mid': {
-                'Smoke 1': { 'location': 'Red', 'clip': './clips/ancient/red-smoke.gif'},
-                'Smoke 2': { 'location': 'Cat', 'clip': './clips/ancient/cat-smoke.gif'},
-                'Flash': { 'location': 'Mid', 'clip': './clips/ancient/mid-flash.gif'}
+            'Mid': {
+                'Smokes': [
+                    { 'location': 'Red', 'clip': './clips/ancient/red-smoke.gif' },
+                    { 'location': 'Cat', 'clip': './clips/ancient/cat-smoke.gif' },
+                ],
+                'Flashes':[
+                  { 'location': 'Mid', 'clip': './clips/ancient/mid-flash.gif' }
+                ]
             }
         },
-        'ct': {
-            'a': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+        'CT': {
+            'A': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             },
-            'b': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+            'B': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             },
-            'mid': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+            'Mid': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             }
         }
     },
     'Dust2': {
-        't': {
-            'a': {
-                'Flash': { 'location': 'Long', 'clip': './clips/dust2/a-long-flash.gif'},
-                'Smoke': { 'location': 'A Cross', 'clip': './clips/dust2/a-site-cross-smoke.gif'},
-                'Molly': { 'location': 'Car', 'clip': './clips/dust2/a-car-molly.gif'},
+        'T': {
+            'A': {
+                'Smokes': [
+                    { 'location': 'A Cross', 'clip': './clips/dust2/a-site-cross-smoke.gif' },
+                ],
+                'Mollies': [
+                    { 'location': 'Car', 'clip': './clips/dust2/a-car-molly.gif' },
+                ],
+                'Flashes':[
+                  { 'location': 'Long', 'clip': './clips/dust2/a-long-flash.gif' },
+                ]
             },
-            'b': {
-                'Smoke 1': { 'location': 'Door', 'clip': './clips/dust2/b-door-smoke.gif'},
-                'Smoke 2': { 'location': 'Window', 'clip': './clips/dust2/b-window-smoke.gif'},
-                'Smoke 3': { 'location': 'Entry', 'clip': './clips/dust2/b-entry-smoke.gif'},
-                'Molly': { 'location': 'Back Site', 'clip': './clips/dust2/b-molly.gif'},
-                'Flash': { 'location': 'Entry', 'clip': './clips/dust2/b-flash.gif'}
+            'B': {
+                'Smokes': [
+                    { 'location': 'Door', 'clip': './clips/dust2/b-door-smoke.gif' },
+                    { 'location': 'Window', 'clip': './clips/dust2/b-window-smoke.gif' },
+                    { 'location': 'Entry', 'clip': './clips/dust2/b-entry-smoke.gif' },
+                ],
+                'Mollies': [
+                    { 'location': 'Back Site', 'clip': './clips/dust2/b-molly.gif'},
+                ],
+                'Flashes':[
+                  { 'location': 'Entry', 'clip': './clips/dust2/b-flash.gif'}
+                ]
             },
-            'mid': {
-                'Smoke 1': { 'location': 'X Box', 'clip': './clips/dust2/xbox-smoke.gif'},
-                'Smoke 2': { 'location': 'Mid Door', 'clip': './clips/dust2/mid-door-smoke.gif'},
-                'Flash': { 'location': 'Cat', 'clip': './clips/dust2/cat-flash.gif'},
-                'Smoke 3': { 'location': 'Cat', 'clip': './clips/dust2/cat-entry-smoke.gif'},
+            'Mid': {
+                'Smokes': [
+                    { 'location': 'X Box', 'clip': './clips/dust2/xbox-smoke.gif' },
+                    { 'location': 'Mid Door', 'clip': './clips/dust2/mid-door-smoke.gif' },
+                    { 'location': 'Cat', 'clip': './clips/dust2/cat-entry-smoke.gif'},
+                ],
+                'Mollies': [
+                    { 'location': 'Car', 'clip': './clips/dust2/a-car-molly.gif' },
+                ],
+                'Flashes':[
+                  { 'location': 'Cat', 'clip': './clips/dust2/cat-flash.gif' },
+                ]
             }
         },
-        'ct': {
-            'a': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+        'CT': {
+            'A': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             },
-            'b': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+            'B': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             },
-            'mid': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+            'Mid': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             }
         }
     },
     'Inferno': {
-        't': {
-            'a': {
-                'Smoke 1': { 'location': 'Arches', 'clip': './clips/inferno/a-arches-smoke.gif'},
-                'Smoke 2': { 'location': 'Library', 'clip': './clips/inferno/a-library-smoke.gif'},
-                'Smoke 3': { 'location': 'Pit', 'clip': './clips/inferno/a-pit-smoke.gif'},
-                'Molly': { 'location': 'Lane', 'clip': './clips/inferno/a-lane-molly.gif'},
-                'Flash': { 'location': 'Site', 'clip': './clips/inferno/a-flash.gif'}
+        'T': {
+            'A': {
+                'Smokes': [
+                    { 'location': 'Arches', 'clip': './clips/inferno/a-arches-smoke.gif' },
+                    { 'location': 'Library', 'clip': './clips/inferno/a-library-smoke.gif' },
+                    { 'location': 'Pit', 'clip': './clips/inferno/a-pit-smoke.gif' },
+                ],
+                'Mollies': [
+                    { 'location': 'Lane', 'clip': './clips/inferno/a-lane-molly.gif' },
+                ],
+                'Flashes':[
+                  { 'location': 'Site', 'clip': './clips/inferno/a-flash.gif' }
+                ]
             },
-            'b': {
-                'Smoke 1': { 'location': 'CT', 'clip': './clips/inferno/b-ct-smoke.gif'},
-                'Smoke 2': { 'location': 'Coffins', 'clip': './clips/inferno/b-coffins-smoke.gif'},
-                'Molly 1': { 'location': 'Close Box', 'clip': './clips/inferno/b-close-box-molly.gif'},
-                'Molly 2': { 'location': 'Far Box', 'clip': './clips/inferno/b-far-box-molly.gif'},
-                'Flash': { 'location': 'Site', 'clip': './clips/inferno/b-flash.gif'}
+            'B': {
+                'Smokes': [
+                    { 'location': 'CT', 'clip': './clips/inferno/b-ct-smoke.gif' },
+                    { 'location': 'Coffins', 'clip': './clips/inferno/b-coffins-smoke.gif' },
+                    
+                ],
+                'Mollies': [
+                    { 'location': 'Close Box', 'clip': './clips/inferno/b-close-box-molly.gif' },
+                    { 'location': 'Far Box', 'clip': './clips/inferno/b-far-box-molly.gif' },
+                ],
+                'Flashes':[
+                  { 'location': 'Site', 'clip': './clips/inferno/b-flash.gif' }
+                ]
             },
         },
-        'ct': {
-            'a': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+        'CT': {
+            'A': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             },
-            'b': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+            'B': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             },
-            'mid': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+            'Mid': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             }
         }
     },
     'Mirage': {
-        't': {
-            'a': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+        'T': {
+            'A': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             },
-            'b': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+            'B': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             },
-            'mid': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+            'Mid': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             }
         },
-        'ct': {
-            'a': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+        'CT': {
+            'A': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             },
-            'b': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+            'B': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             },
-            'mid': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+            'Mid': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             }
         }
     },
     'Nuke': {
-        't': {
-            'a': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+        'T': {
+            'A': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             },
-            'b': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+            'B': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             },
-            'mid': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+            'Mid': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             }
         },
-        'ct': {
-            'a': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+        'CT': {
+            'A': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             },
-            'b': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+            'B': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             },
-            'mid': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+            'Mid': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             }
         }
     },
     'Vertigo': {
-        't': {
-            'a': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+        'T': {
+            'A': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             },
-            'b': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+            'B': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             },
-            'mid': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+            'Mid': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             }
         },
-        'ct': {
-            'a': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+        'CT': {
+            'A': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             },
-            'b': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+            'B': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             },
-            'mid': {
-                'Smoke 1': { 'location': '', 'clip': ''},
-                'Smoke 2': { 'location': '', 'clip': ''},
-                'Smoke 3': { 'location': '', 'clip': ''},
-                'Molly': { 'location': '', 'clip': ''},
-                'Flash': { 'location': '', 'clip': ''}
+            'Mid': {
+                'Smokes': [],
+                'Mollies': [],
+                'Flashes':[]
             }
         }
     },

@@ -6,12 +6,13 @@ from executes import execute_dict
 from discord import ui
 from discord.ext import commands
 from dotenv import load_dotenv
+from aws import download_clip
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 intents = discord.Intents.all()
-bot = commands.Bot(command_prefix="!", intents=intents)
+bot = discord.Bot(intents=intents)
 
 selected_map = ''
 selected_site = ''
@@ -29,18 +30,24 @@ async def set_selected(interaction: discord.Interaction):
         await interaction.response.defer()
 
 async def return_execute(interaction: discord.Interaction):
-    selected_side_description = 'Terrorist' if selected_side == 't' else 'Counter Terrorist'
+    selected_side_description = 'Terrorist' if selected_side == 'T' else 'Counter Terrorist'
     selectedExecute = get_execute(selected_map, selected_site, selected_side)
 
     await interaction.message.delete()
     await interaction.response.send_message(f'Generating {selected_side_description} {selected_site.upper()} Site execute on {selected_map} . . .', delete_after=60)
     
     for key, value in selectedExecute.items():
-        if len(value['clip']) > 0:
-            with open(value['clip'], 'rb') as file:
-                await interaction.followup.send(content=f'{key} for {value['location']} on {selected_site.upper()} site', file=discord.File(file, 'file.gif'), delete_after=600)
-        else:
-            await interaction.followup.send(f'No {key} lineup for {selected_side_description} {selected_site.upper()} Site recorded yet. :frowning:', delete_after=600)
+        await interaction.followup.send(content=f'{key} for {selected_site} site', delete_after=600)
+        for nade in value:
+            if len(nade['clip']) > 0:
+                await download_clip(nade['clip'], selected_map, nade['location'], key, interaction)
+                #with open(nade['clip'], 'rb') as file:
+                #    message = await interaction.original_response()
+                #    print(message)
+                #    await interaction.edit_original_response(content=f'{message.content}\n{'Smoke' if key == 'Smokes' else 'Molly' if key == 'Mollies' else 'Flash'} for {nade['location']}', file=discord.File(file, 'file.gif'), delete_after=600)
+                #    #await interaction.followup.send(content=f'{'Smoke' if key == 'Smokes' else 'Molly' if key == 'Mollies' else 'Flash'} for {nade['location']}', file=discord.File(file, 'file.gif'), delete_after=600)
+            else:
+                await interaction.followup.send(f'No Smoke lineup for {selected_side_description} {selected_site.upper()} Site recorded yet. :frowning:', delete_after=600)
 
 
 class MyView(discord.ui.View):
@@ -66,31 +73,31 @@ class MyView(discord.ui.View):
     @discord.ui.button(label="A Site", row=1, style=discord.ButtonStyle.blurple)
     async def a_site_callback(self, button, interaction):
         global selected_site
-        selected_site = 'a'
+        selected_site = 'A'
         await set_selected(interaction)
 
     @discord.ui.button(label="B Site", row=1, style=discord.ButtonStyle.blurple)
     async def b_site_callback(self, button, interaction):
         global selected_site
-        selected_site = 'b'
+        selected_site = 'B'
         await set_selected(interaction)
 
     @discord.ui.button(label="Mid Site", row=1, style=discord.ButtonStyle.blurple)
     async def mid_site_callback(self, button, interaction):
         global selected_site
-        selected_site = 'mid'
+        selected_site = 'Mid'
         await set_selected(interaction)
 
     @discord.ui.button(label="Terrorist", row=2, style=discord.ButtonStyle.red)
     async def t_callback(self, button, interaction):
         global selected_side
-        selected_side = 't'
+        selected_side = 'T'
         await set_selected(interaction)
 
     @discord.ui.button(label="Counter Terrorist", row=2, style=discord.ButtonStyle.green)
     async def ct_callback(self, button, interaction):
         global selected_side
-        selected_side = 'ct'
+        selected_side = 'CT'
         await set_selected(interaction)
 
 
@@ -98,10 +105,10 @@ class MyView(discord.ui.View):
 async def on_ready():
     print(f"{bot.user} is ready and online!")
 
-@bot.command()
+@bot.slash_command(description='Sends an execute for the popular fps game Counter Strike!!!!!')
 async def execute(ctx):
-    await ctx.send(f"You still a crackr! ", view=MyView(), delete_after=890)
-    await ctx.message.delete()
+    await ctx.respond(f"You still a crackr! ", view=MyView(), delete_after=890)
+    #await ctx.message.delete()
 
 @bot.command()
 async def clear_history(ctx):
