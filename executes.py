@@ -88,11 +88,11 @@ execute_dict = {
             },
             'Mid': {
                 'Smokes': [
-                    { 'location': 'Red', 'clip': './clips/ancient/red-smoke.gif' },
-                    { 'location': 'Cat', 'clip': './clips/ancient/cat-smoke.gif' },
+                    { 'location': 'Red', 'clip': 'red-smoke.gif' },
+                    { 'location': 'Cat', 'clip': 'cat-smoke.gif' },
                 ],
                 'Flashes':[
-                  { 'location': 'Mid', 'clip': './clips/ancient/mid-flash.gif' }
+                  { 'location': 'Mid', 'clip': 'mid-flash.gif' }
                 ]
             }
         },
@@ -118,39 +118,39 @@ execute_dict = {
         'T': {
             'A': {
                 'Smokes': [
-                    { 'location': 'A Cross', 'clip': './clips/dust2/a-site-cross-smoke.gif' },
+                    { 'location': 'A Cross', 'clip': 'a-site-cross-smoke.gif' },
                 ],
                 'Mollies': [
-                    { 'location': 'Car', 'clip': './clips/dust2/a-car-molly.gif' },
+                    { 'location': 'Car', 'clip': 'a-car-molly.gif' },
                 ],
                 'Flashes':[
-                  { 'location': 'Long', 'clip': './clips/dust2/a-long-flash.gif' },
+                  { 'location': 'Long', 'clip': 'a-long-flash.gif' },
                 ]
             },
             'B': {
                 'Smokes': [
-                    { 'location': 'Door', 'clip': './clips/dust2/b-door-smoke.gif' },
-                    { 'location': 'Window', 'clip': './clips/dust2/b-window-smoke.gif' },
-                    { 'location': 'Entry', 'clip': './clips/dust2/b-entry-smoke.gif' },
+                    { 'location': 'Door', 'clip': 'b-door-smoke.gif' },
+                    { 'location': 'Window', 'clip': 'b-window-smoke.gif' },
+                    { 'location': 'Entry', 'clip': 'b-entry-smoke.gif' },
                 ],
                 'Mollies': [
-                    { 'location': 'Back Site', 'clip': './clips/dust2/b-molly.gif'},
+                    { 'location': 'Back Site', 'clip': 'b-molly.gif'},
                 ],
                 'Flashes':[
-                  { 'location': 'Entry', 'clip': './clips/dust2/b-flash.gif'}
+                  { 'location': 'Entry', 'clip': 'b-flash.gif'}
                 ]
             },
             'Mid': {
                 'Smokes': [
-                    { 'location': 'X Box', 'clip': './clips/dust2/xbox-smoke.gif' },
-                    { 'location': 'Mid Door', 'clip': './clips/dust2/mid-door-smoke.gif' },
-                    { 'location': 'Cat', 'clip': './clips/dust2/cat-entry-smoke.gif'},
+                    { 'location': 'X Box', 'clip': 'xbox-smoke.gif' },
+                    { 'location': 'Mid Door', 'clip': 'mid-door-smoke.gif' },
+                    { 'location': 'Cat', 'clip': 'cat-entry-smoke.gif'},
                 ],
                 'Mollies': [
-                    { 'location': 'Car', 'clip': './clips/dust2/a-car-molly.gif' },
+                    { 'location': 'Car', 'clip': 'a-car-molly.gif' },
                 ],
                 'Flashes':[
-                  { 'location': 'Cat', 'clip': './clips/dust2/cat-flash.gif' },
+                  { 'location': 'Cat', 'clip': 'cat-flash.gif' },
                 ]
             }
         },
@@ -176,29 +176,29 @@ execute_dict = {
         'T': {
             'A': {
                 'Smokes': [
-                    { 'location': 'Arches', 'clip': './clips/inferno/a-arches-smoke.gif' },
-                    { 'location': 'Library', 'clip': './clips/inferno/a-library-smoke.gif' },
-                    { 'location': 'Pit', 'clip': './clips/inferno/a-pit-smoke.gif' },
+                    { 'location': 'Arches', 'clip': 'a-arches-smoke.gif' },
+                    { 'location': 'Library', 'clip': 'a-library-smoke.gif' },
+                    { 'location': 'Pit', 'clip': 'a-pit-smoke.gif' },
                 ],
                 'Mollies': [
-                    { 'location': 'Lane', 'clip': './clips/inferno/a-lane-molly.gif' },
+                    { 'location': 'Lane', 'clip': 'a-lane-molly.gif' },
                 ],
                 'Flashes':[
-                  { 'location': 'Site', 'clip': './clips/inferno/a-flash.gif' }
+                  { 'location': 'Site', 'clip': 'a-flash.gif' }
                 ]
             },
             'B': {
                 'Smokes': [
-                    { 'location': 'CT', 'clip': './clips/inferno/b-ct-smoke.gif' },
-                    { 'location': 'Coffins', 'clip': './clips/inferno/b-coffins-smoke.gif' },
+                    { 'location': 'CT', 'clip': 'b-ct-smoke.gif' },
+                    { 'location': 'Coffins', 'clip': 'b-coffins-smoke.gif' },
                     
                 ],
                 'Mollies': [
-                    { 'location': 'Close Box', 'clip': './clips/inferno/b-close-box-molly.gif' },
-                    { 'location': 'Far Box', 'clip': './clips/inferno/b-far-box-molly.gif' },
+                    { 'location': 'Close Box', 'clip': 'b-close-box-molly.gif' },
+                    { 'location': 'Far Box', 'clip': 'b-far-box-molly.gif' },
                 ],
                 'Flashes':[
-                  { 'location': 'Site', 'clip': './clips/inferno/b-flash.gif' }
+                  { 'location': 'Site', 'clip': 'b-flash.gif' }
                 ]
             },
         },

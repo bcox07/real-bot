@@ -18,14 +18,20 @@ selected_map = ''
 selected_site = ''
 selected_side = ''
 
-async def print_selected():
-    print(f'Map: {selected_map}')
-    print(f'Site: {selected_site}')
-    print(f'Side: {selected_side}')
+async def reset_selected():
+    global selected_map
+    selected_map = ''
+
+    global selected_site
+    selected_site = ''
+
+    global selected_side
+    selected_side = ''
 
 async def set_selected(interaction: discord.Interaction):
     if len(selected_map) > 0 and len(selected_site) > 0 and len(selected_side) > 0:
         await return_execute(interaction)
+        await reset_selected()
     else:
         await interaction.response.defer()
 
@@ -33,19 +39,29 @@ async def return_execute(interaction: discord.Interaction):
     selected_side_description = 'Terrorist' if selected_side == 'T' else 'Counter Terrorist'
     selectedExecute = get_execute(selected_map, selected_site, selected_side)
 
-    await interaction.message.delete()
     await interaction.response.send_message(f'Generating {selected_side_description} {selected_site.upper()} Site execute on {selected_map} . . .', delete_after=60)
     
     for key, value in selectedExecute.items():
-        await interaction.followup.send(content=f'{key} for {selected_site} site', delete_after=600)
+        emoji = ''
+        if key.lower() == 'mollies':
+            emoji = ':fire:'
+        elif key.lower() == 'smokes':
+            emoji = ':cloud:'
+        else:
+            emoji = ':flashlight:'
+
+        emoji_group = ''
+        for x in range(len(value)):
+            emoji_group += emoji
+        
+        await interaction.followup.send(content=f'{emoji_group} for {selected_site} site', delete_after=600)
+        
         for nade in value:
             if len(nade['clip']) > 0:
-                await download_clip(nade['clip'], selected_map, nade['location'], key, interaction)
-                #with open(nade['clip'], 'rb') as file:
-                #    message = await interaction.original_response()
-                #    print(message)
-                #    await interaction.edit_original_response(content=f'{message.content}\n{'Smoke' if key == 'Smokes' else 'Molly' if key == 'Mollies' else 'Flash'} for {nade['location']}', file=discord.File(file, 'file.gif'), delete_after=600)
-                #    #await interaction.followup.send(content=f'{'Smoke' if key == 'Smokes' else 'Molly' if key == 'Mollies' else 'Flash'} for {nade['location']}', file=discord.File(file, 'file.gif'), delete_after=600)
+
+                clip = await download_clip(nade['clip'], selected_map, nade['location'], key)
+                await interaction.followup.send(content=f'{emoji} for {nade['location']}', file=clip, delete_after=600)
+                
             else:
                 await interaction.followup.send(f'No Smoke lineup for {selected_side_description} {selected_site.upper()} Site recorded yet. :frowning:', delete_after=600)
 
@@ -56,8 +72,8 @@ class MyView(discord.ui.View):
         placeholder="Map", 
         row=0,
         options = [
-            discord.SelectOption(label="Anubis", value="Anubis"),
             discord.SelectOption(label="Ancient", value="Ancient"),
+            discord.SelectOption(label="Anubis", value="Anubis"),
             discord.SelectOption(label="Dust2", value="Dust2"),
             discord.SelectOption(label="Inferno", value="Inferno"),
             discord.SelectOption(label="Mirage", value="Mirage"),
@@ -108,7 +124,6 @@ async def on_ready():
 @bot.slash_command(description='Sends an execute for the popular fps game Counter Strike!!!!!')
 async def execute(ctx):
     await ctx.respond(f"You still a crackr! ", view=MyView(), delete_after=890)
-    #await ctx.message.delete()
 
 @bot.command()
 async def clear_history(ctx):

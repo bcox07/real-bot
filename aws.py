@@ -5,20 +5,21 @@ import os
 s3 = boto3.client('s3')
 
 
-def buffer_exists(buffer_clip_location):
-    print(f'Buffer file exists: {os.path.exists(buffer_clip_location)}')
-    print('Omitting downloading from S3...')
+def cached_file_exists(clip_location):
+    print(f'Cached file exists for {clip_location}: {os.path.exists(clip_location)}')
 
-    return os.path.exists(buffer_clip_location)
+    return os.path.exists(clip_location)
 
 
-async def download_clip(clip, map, location, nade_type, interaction: discord.Interaction):
+async def download_clip(clip, map, location, nade_type):
 
-    buffer_clip_location = f'clips/{map.lower()}/{clip}'
+    clip_location = f'clips/{map.lower()}/{clip}'
 
-    if (buffer_exists(buffer_clip_location) is not True):
-        print('Buffer not found. Downloading from S3...')
-        s3.download_file('lineup-clips', f'{map.lower()}/{clip}', buffer_clip_location)
+    if (cached_file_exists(clip_location) is not True):
+        print(f'Buffer NOT found for {clip_location}. Downloading from S3...')
+        s3.download_file('lineup-clips', f'{map.lower()}/{clip}', clip_location)
+    else:
+        print(f'Cached file found for {clip_location}. Using cache...')
     
-    with open(buffer_clip_location, 'rb') as file:
-        await interaction.followup.send(content=f'{'Smoke' if nade_type == 'Smokes' else 'Molly' if nade_type == 'Mollies' else 'Flash'} for {location}', file=discord.File(file, 'file.gif'), delete_after=600)
+    with open(clip_location, 'rb') as file:
+        return discord.File(file, f'{'Smoke' if nade_type == 'Smokes' else 'Molly' if nade_type == 'Mollies' else 'Flash'}-for-{location}.gif')
