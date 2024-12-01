@@ -130,7 +130,7 @@ async def clear_history(ctx):
     channel = bot.get_channel(ctx.channel.id)
     messages = await channel.history(limit=500).flatten()
 
-    await ctx.send('Clearing messages. . .', delete_after=300)
+    await ctx.respond('Clearing messages. . .', delete_after=300)
     index = 1
     for message in messages:
         await message.delete()

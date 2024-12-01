@@ -315,14 +315,31 @@ execute_dict = {
     'Vertigo': {
         'T': {
             'A': {
-                'Smokes': [],
-                'Mollies': [],
-                'Flashes':[]
+                'Smokes': [
+                    { 'location': 'Box', 'clip': 'a-box-smoke.gif' },
+                    { 'location': 'Headshot', 'clip': 'a-headshot-smoke.gif' },
+                    { 'location': 'Elevator', 'clip': 'elevator-smoke.gif' }
+                ],
+                'Mollies': [
+                    { 'location': 'Short', 'clip': 'a-short-molly.gif' },
+                    { 'location': 'Sandbags', 'clip': 'sandbags-molly.gif' },
+                ],
+                'Flashes':[
+                    { 'location': 'Site', 'clip': 'a-flash.gif' }
+                ]
             },
             'B': {
-                'Smokes': [],
-                'Mollies': [],
-                'Flashes':[]
+                'Smokes': [
+                    { 'location': 'Cross', 'clip': 'b-cross-smoke.gif' },
+                    { 'location': 'Headshot', 'clip': 'b-headshot-smoke.gif' },
+                    { 'location': 'E-Box', 'clip': 'e-box-smoke.gif' }
+                ],
+                'Mollies': [
+                    { 'location': 'Pillar', 'clip': 'b-pillar-molly.gif' }
+                ],
+                'Flashes':[
+                    { 'location': 'Site', 'clip': 'b-flash.gif' }
+                ]
             },
             'Mid': {
                 'Smokes': [],

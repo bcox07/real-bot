@@ -5,7 +5,7 @@ from pygifsicle import gifsicle
 
 from pathlib import Path
 
-parentDirectoryString = './clips/mirage'
+parentDirectoryString = './clips/vertigo'
 
 directory = os.fsencode(parentDirectoryString)
     
@@ -21,6 +21,6 @@ for file in os.listdir(directory):
         videoClip.write_gif(gifLocation, fps=15)
 
         if os.path.getsize(gifLocation) > 15000000:
-            print(f'File size greater than 15 MB, optimizing: {gifLocation} - Actual size: {os.path.getsize(gifLocation)}')
+            print(f'File size greater than 15 MB, optimizing: {gifLocation} - Actual size: {os.path.getsize(gifLocation) / 1000000} MB')
             gifsicle(sources=[f"{gifLocation}"], optimize=True, options=["--verbose", "--lossy=95"]) # Options to use.
         continue
