@@ -223,17 +223,37 @@ execute_dict = {
     'Mirage': {
         'T': {
             'A': {
-                'Smokes': [],
-                'Mollies': [],
-                'Flashes':[]
+                'Smokes': [
+                    { 'location': 'CT', 'clip': 'ct-smoke.gif' },
+                    { 'location': 'Jungle', 'clip': 'jungle-smoke.gif' },
+                    { 'location': 'Stairs', 'clip': 'stairs-smoke.gif' }
+                ],
+                'Mollies': [
+                    { 'location': 'Under Palace', 'clip': 'under-palace-molly.gif' }
+                ],
+                'Flashes':[
+                    { 'location': 'Site', 'clip': 'a-flash.gif' }
+                ]
             },
             'B': {
-                'Smokes': [],
-                'Mollies': [],
-                'Flashes':[]
+                'Smokes': [
+                    { 'location': 'Market Door', 'clip': 'market-door-smoke.gif' },
+                    { 'location': 'Market Window', 'clip': 'market-window-smoke.gif' },
+                    { 'location': 'Arches', 'clip': 'arcehs-smoke.gif' }
+                ],
+                'Mollies': [
+                    { 'location': 'Bench', 'clip': 'bench-molly.gif' }
+                ],
+                'Flashes':[
+                    { 'location': 'Site', 'clip': 'b-flash.gif' }
+                ]
             },
             'Mid': {
-                'Smokes': [],
+                'Smokes': [
+                    { 'location': 'Connector', 'clip': 'connector-smoke.gif' },
+                    { 'location': 'Window', 'clip': 'window-smoke.gif' },
+                    { 'location': 'Connector', 'clip': 'connector-smoke.gif' }
+                ],
                 'Mollies': [],
                 'Flashes':[]
             }

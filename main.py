@@ -123,7 +123,7 @@ async def on_ready():
 
 @bot.slash_command(description='Sends an execute for the popular fps game Counter Strike!!!!!')
 async def execute(ctx):
-    await ctx.respond(f"You still a crackr! ", view=MyView(), delete_after=890)
+    await ctx.respond(f"You still a crackr! ", view=MyView(), delete_after=600)
 
 @bot.command()
 async def clear_history(ctx):
