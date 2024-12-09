@@ -1,18 +1,16 @@
 import os
 import discord
-import asyncio
+import cache
 
 from executes import execute_dict
-from discord import ui
-from discord.ext import commands
 from dotenv import load_dotenv
 from aws import download_clip
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-intents = discord.Intents.all()
-bot = discord.Bot(intents=intents)
+#intents = discord.Intents.all()
+bot = discord.Bot(intents=discord.Intents.all())
 
 selected_map = ''
 selected_site = ''
@@ -64,6 +62,12 @@ async def return_execute(interaction: discord.Interaction):
                 
             else:
                 await interaction.followup.send(f'No Smoke lineup for {selected_side_description} {selected_site.upper()} Site recorded yet. :frowning:', delete_after=600)
+
+        utilized_cache = cache.check_size('clips')
+        print(f'Cache size utilized: {utilized_cache} MB')
+
+        if utilized_cache > 200:
+            cache.evict(200)
 
 
 class MyView(discord.ui.View):

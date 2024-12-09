@@ -1,22 +1,20 @@
+import os
 import boto3
 import discord
-import os
+import cache
 
 s3 = boto3.client('s3')
 
 
-def cached_file_exists(clip_location):
-    print(f'Cached file exists for {clip_location}: {os.path.exists(clip_location)}')
-
-    return os.path.exists(clip_location)
-
-
 async def download_clip(clip, map, location, nade_type):
+    local_clip_directory = 'clips'
+    clip_location = f'clips\{map.lower()}\{clip}'
 
-    clip_location = f'clips/{map.lower()}/{clip}'
-
-    if (cached_file_exists(clip_location) is not True):
+    if (not cache.file_exists(clip_location)):
         print(f'Buffer NOT found for {clip_location}. Downloading from S3...')
+        if not os.path.exists(os.path.dirname(clip_location)):
+            os.makedirs(os.path.dirname(clip_location))
+
         s3.download_file('lineup-clips', f'{map.lower()}/{clip}', clip_location)
     else:
         print(f'Cached file found for {clip_location}. Using cache...')
