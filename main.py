@@ -1,10 +1,10 @@
 import os
 import discord
-import cache
 
-from executes import execute_dict
 from dotenv import load_dotenv
 from aws import download_clip
+import cache
+from executes import execute_dict
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -12,69 +12,94 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 #intents = discord.Intents.all()
 bot = discord.Bot(intents=discord.Intents.all())
 
-selected_map = ''
-selected_site = ''
-selected_side = ''
+class Selection:
+    def __init__(self, map, site, side):
+        self.map = map
+        self.site = site
+        self.side = side
 
-async def reset_selected():
-    global selected_map
-    selected_map = ''
+    def set_map(self, map):
+        self.map = map
 
-    global selected_site
-    selected_site = ''
+    def set_site(self, site):
+        self.site = site
 
-    global selected_side
-    selected_side = ''
+    def set_side(self, side):
+        self.side = side
+
+    async def reset(self):
+        self.map = ''
+        self.site = ''
+        self.side = '' 
+
+selection = Selection('', '', '')
 
 async def set_selected(interaction: discord.Interaction):
-    if len(selected_map) > 0 and len(selected_site) > 0 and len(selected_side) > 0:
+    if len(selection.map) > 0 and len(selection.site) > 0 and len(selection.side) > 0:
         await return_execute(interaction)
-        await reset_selected()
+        await selection.reset()
     else:
         await interaction.response.defer()
 
 async def return_execute(interaction: discord.Interaction):
-    selected_side_description = 'Terrorist' if selected_side == 'T' else 'Counter Terrorist'
-    selectedExecute = get_execute(selected_map, selected_site, selected_side)
+    selected_side_description = 'Terrorist' if selection.side == 'T' else 'Counter Terrorist'
+    selected_execute = get_execute(selection.map, selection.site, selection.side)
 
-    await interaction.response.send_message(f'Generating {selected_side_description} {selected_site.upper()} Site execute on {selected_map} . . .', delete_after=60)
-    
-    for key, value in selectedExecute.items():
+    await interaction.response.send_message(f'Generating {selected_side_description} {selection.site.upper()} Site execute on {selection.map} . . .', delete_after=60)
+
+    execute_emojis = ''
+    for key, value in selected_execute.items():
         emoji = ''
         if key.lower() == 'mollies':
-            emoji = ':fire:'
+            fire_emoji = '<:molly:1315925706437296178>'
+            for x in range(len(value)):
+                emoji += fire_emoji
         elif key.lower() == 'smokes':
-            emoji = ':cloud:'
+            smoke_emoji = '<:smoke:1315925707477614613>'
+            for x in range(len(value)):
+                emoji += smoke_emoji
         else:
-            emoji = ':flashlight:'
+            flash_emoji = '<:flash:1315925704998916217>'
+            for x in range(len(value)):
+                emoji += flash_emoji
 
-        emoji_group = ''
-        for x in range(len(value)):
-            emoji_group += emoji
-        
-        await interaction.followup.send(content=f'{emoji_group} for {selected_site} site', delete_after=600)
+        execute_emojis += emoji
+
+    await interaction.followup.send(content=f'{execute_emojis} for {selection.site} site', delete_after=600)
+    
+    for key, value in selected_execute.items():
+        emoji = ''
+        if key.lower() == 'mollies':
+            emoji = '<:molly:1315925706437296178>'
+        elif key.lower() == 'smokes':
+            emoji = '<:smoke:1315925707477614613>'
+        else:
+            emoji = '<:flash:1315925704998916217>'
         
         for nade in value:
             if len(nade['clip']) > 0:
 
-                clip = await download_clip(nade['clip'], selected_map, nade['location'], key)
+                clip = await download_clip(nade['clip'], selection.map, nade['location'], key)
                 await interaction.followup.send(content=f'{emoji} for {nade['location']}', file=clip, delete_after=600)
                 
             else:
-                await interaction.followup.send(f'No Smoke lineup for {selected_side_description} {selected_site.upper()} Site recorded yet. :frowning:', delete_after=600)
+                await interaction.followup.send(f'No Smoke lineup for {selected_side_description} {selection.site.upper()} Site recorded yet. :frowning:', delete_after=600)
 
-        utilized_cache = cache.check_size('clips')
-        print(f'Cache size utilized: {utilized_cache} MB')
+    utilized_cache = cache.check_size()
+    print(f'Cache size utilized: {utilized_cache} MB')
 
-        if utilized_cache > 200:
-            cache.evict(200)
+    if utilized_cache > 200:
+        await cache.evict(200)
 
 
 class MyView(discord.ui.View):
 
     @discord.ui.select(
-        placeholder="Map", 
+        placeholder="Map",
+        select_type=discord.ComponentType.string_select,
         row=0,
+        min_values=1,
+        max_values=1,
         options = [
             discord.SelectOption(label="Ancient", value="Ancient"),
             discord.SelectOption(label="Anubis", value="Anubis"),
@@ -86,39 +111,35 @@ class MyView(discord.ui.View):
         ]
     )
     async def select_callback(self, select, interaction):
-        global selected_map
-        selected_map = select.values[0]
+        selection.set_map(select.values[0])
         await set_selected(interaction)
 
-    @discord.ui.button(label="A Site", row=1, style=discord.ButtonStyle.blurple)
-    async def a_site_callback(self, button, interaction):
-        global selected_site
-        selected_site = 'A'
-        await set_selected(interaction)
-
-    @discord.ui.button(label="B Site", row=1, style=discord.ButtonStyle.blurple)
-    async def b_site_callback(self, button, interaction):
-        global selected_site
-        selected_site = 'B'
-        await set_selected(interaction)
-
-    @discord.ui.button(label="Mid Site", row=1, style=discord.ButtonStyle.blurple)
-    async def mid_site_callback(self, button, interaction):
-        global selected_site
-        selected_site = 'Mid'
-        await set_selected(interaction)
-
-    @discord.ui.button(label="Terrorist", row=2, style=discord.ButtonStyle.red)
+    @discord.ui.button(label="Terrorist", row=1, style=discord.ButtonStyle.red)
     async def t_callback(self, button, interaction):
-        global selected_side
-        selected_side = 'T'
+        selection.set_side('T')
         await set_selected(interaction)
 
-    @discord.ui.button(label="Counter Terrorist", row=2, style=discord.ButtonStyle.green)
+    @discord.ui.button(label="Counter Terrorist", row=1, style=discord.ButtonStyle.green)
     async def ct_callback(self, button, interaction):
-        global selected_side
-        selected_side = 'CT'
+        selection.set_side('CT')
         await set_selected(interaction)
+
+    @discord.ui.button(label="A Site", row=2, style=discord.ButtonStyle.blurple)
+    async def a_site_callback(self, button, interaction):
+        selection.set_site('A')
+        await set_selected(interaction)
+
+    @discord.ui.button(label="B Site", row=2, style=discord.ButtonStyle.blurple)
+    async def b_site_callback(self, button, interaction):
+        selection.set_site('B')
+        await set_selected(interaction)
+
+    @discord.ui.button(label="Mid Site", row=2, style=discord.ButtonStyle.blurple)
+    async def mid_site_callback(self, button, interaction):
+        selection.set_site('Mid')
+        await set_selected(interaction)
+
+    
 
 
 @bot.event
