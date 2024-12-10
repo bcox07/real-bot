@@ -1,43 +1,43 @@
 import os
 
+PARENT_DIRECTORY = 'clips'
 
 def file_exists(clip_location):
     return os.path.exists(clip_location)
 
 
-def check_size(directory = 'clips'):
+def check_size():
     total_size = 0
-    start_path = directory
-    for dirpath, dirnames, filenames in os.walk(start_path):
+    for dirpath, dirnames, filenames in os.walk(PARENT_DIRECTORY):
         for f in filenames:
             fp = os.path.join(dirpath, f)
             total_size += os.path.getsize(fp)
     
     return total_size / 1024 / 1024
 
-def evict(size):
-    cache_files = list_files_by_access_date('clips')
+async def evict(max_size):
+    cache_files = list_files_by_access_date()
 
     for file_path, access_time in cache_files:
-        print(f'Size: {check_size('clips')} - Max Size: {size}')
-        if check_size('clips') < size:
-            print(f'Cache size lower than {size} MB')
+        size_utilized = check_size()
+        print(f'Size: {size_utilized} MB - Max Size: {max_size} MB')
+        if size_utilized < max_size:
+            print(f'Cache size lower than {max_size} MB')
             return
         
         os.remove(file_path)
         print(f'File removed: {file_path} - {access_time}')
 
 
-def list_files_by_access_date(path: str):
+def list_files_by_access_date():
     files = []
-    for dir_path, dir_names, file_names in os.walk(path):
-        for file_name in file_names:
-            
+    for dir_path, dir_names, file_names in os.walk(PARENT_DIRECTORY):
+        for file_name in file_names:           
             filepath = os.path.join(dir_path, file_name)
             if os.path.isfile(filepath):
                 files.append((filepath, os.path.getatime(filepath)))
 
-    # Sort files by access time in descending order (most recent first)
+    # Sort files by access time in ascending order
     files.sort(key=lambda x: x[1], reverse=False)
 
     return files

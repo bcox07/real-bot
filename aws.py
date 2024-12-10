@@ -7,8 +7,7 @@ s3 = boto3.client('s3')
 
 
 async def download_clip(clip, map, location, nade_type):
-    local_clip_directory = 'clips'
-    clip_location = f'clips\{map.lower()}\{clip}'
+    clip_location = os.path.join(cache.PARENT_DIRECTORY, map.lower(), clip)
 
     if (not cache.file_exists(clip_location)):
         print(f'Buffer NOT found for {clip_location}. Downloading from S3...')
