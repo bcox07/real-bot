@@ -2,35 +2,14 @@ import os
 import discord
 
 from dotenv import load_dotenv
-from aws import download_clip
-import cache
+from classes.aws import download_clip
+from classes.cache import Cache
+from classes.selection import Selection
 from executes import execute_dict
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-
-#intents = discord.Intents.all()
 bot = discord.Bot(intents=discord.Intents.all())
-
-class Selection:
-    def __init__(self, map, site, side):
-        self.map = map
-        self.site = site
-        self.side = side
-
-    def set_map(self, map):
-        self.map = map
-
-    def set_site(self, site):
-        self.site = site
-
-    def set_side(self, side):
-        self.side = side
-
-    async def reset(self):
-        self.map = ''
-        self.site = ''
-        self.side = '' 
 
 selection = Selection('', '', '')
 
@@ -66,7 +45,8 @@ async def return_execute(interaction: discord.Interaction):
         execute_emojis += emoji
 
     await interaction.followup.send(content=f'{execute_emojis} for {selection.site} site', delete_after=600)
-    
+    cache = Cache()
+
     for key, value in selected_execute.items():
         emoji = ''
         if key.lower() == 'mollies':
@@ -79,16 +59,16 @@ async def return_execute(interaction: discord.Interaction):
         for nade in value:
             if len(nade['clip']) > 0:
 
-                clip = await download_clip(nade['clip'], selection.map, nade['location'], key)
+                clip = await download_clip(cache, nade['clip'], selection.map, nade['location'], key)
                 await interaction.followup.send(content=f'{emoji} for {nade['location']}', file=clip, delete_after=600)
                 
             else:
                 await interaction.followup.send(f'No Smoke lineup for {selected_side_description} {selection.site.upper()} Site recorded yet. :frowning:', delete_after=600)
 
-    utilized_cache = cache.check_size()
-    print(f'Cache size utilized: {utilized_cache} MB')
+    cache.get_size()
+    print(f'Cache size utilized: {cache.size} MB')
 
-    if utilized_cache > 200:
+    if cache.size > 200:
         await cache.evict(200)
 
 
