@@ -1,0 +1,12 @@
+FROM python:3.14.0a3-bookworm
+
+
+COPY requirements.txt requirements.txt
+RUN pwd && ls -l
+COPY . .
+RUN pwd && ls -l
+
+RUN echo 'Installing packages . . . '
+RUN pip3 install py-cord boto3 audioop-lts python-dotenv asyncio awscli
+RUN echo 'Packages installed'
+CMD ["python", "-u", "main.py"]
