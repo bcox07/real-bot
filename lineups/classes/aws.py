@@ -2,8 +2,23 @@ import os
 import boto3
 import discord
 from classes.cache import Cache
+from dotenv import load_dotenv
 
-s3 = boto3.client('s3')
+AWS_ACCESS_KEY = os.getenv('AWS_ACCESS_KEY')
+AWS_SECRET_KEY = os.getenv('AWS_SECRET_KEY')
+AWS_SESSION_TOKEN = os.getenv('AWS_SESSION_TOKEN')
+
+client = boto3.client(
+    's3',
+    aws_access_key_id=AWS_ACCESS_KEY,
+    aws_secret_access_key=AWS_SECRET_KEY
+)
+
+try:
+    response = client.list_buckets()
+    print("Boto3 S3 client is working correctly.")
+except Exception as e:
+    print("Error: ", e)
 
 
 async def download_clip(cache: Cache, clip, map, location, nade_type):
@@ -14,7 +29,7 @@ async def download_clip(cache: Cache, clip, map, location, nade_type):
         if not os.path.exists(os.path.dirname(clip_location)):
             os.makedirs(os.path.dirname(clip_location))
 
-        s3.download_file('lineup-clips', f'{map.lower()}/{clip}', clip_location)
+        client.download_file('lineup-clips', f'{map.lower()}/{clip}', clip_location)
         cache.file_dict[clip_location] = {os.path.getatime(clip_location), os.path.getsize(clip_location)}
     else:
         print(f'Cached file found for {clip_location}. Using cache...')

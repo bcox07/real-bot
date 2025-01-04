@@ -2,7 +2,7 @@ import os
 
 class Cache:
     def __init__(self):
-        self.parent_directory = 'clips'
+        self.parent_directory = './clips'
         self.get_file_dict()
         self.get_size()
 
@@ -20,7 +20,7 @@ class Cache:
         for file, value in file_dict:
             print(f'{file} - {value}')
 
-        print(f'get_file_list set: {len(file_dict)}')
+        print(f'get_file_dict set: {len(file_dict)}')
         self.file_dict = dict((file_path, values) for file_path, values in file_dict)
 
     def file_exists(self, clip_location: str):

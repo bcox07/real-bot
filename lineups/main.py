@@ -1,5 +1,6 @@
 import os
 import discord
+import asyncio
 
 from dotenv import load_dotenv
 from classes.aws import download_clip
@@ -7,9 +8,11 @@ from classes.cache import Cache
 from classes.selection import Selection
 from executes import execute_dict
 
+asyncio.set_event_loop(asyncio.new_event_loop())
+
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-bot = discord.Bot(intents=discord.Intents.all())
+bot = discord.Bot()
 
 selection = Selection('', '', '')
 
@@ -22,7 +25,7 @@ async def set_selected(interaction: discord.Interaction):
 
 async def return_execute(interaction: discord.Interaction):
     selected_side_description = 'Terrorist' if selection.side == 'T' else 'Counter Terrorist'
-    selected_execute = get_execute(selection.map, selection.site, selection.side)
+    selected_execute = await get_execute(selection.map, selection.site, selection.side)
 
     await interaction.response.send_message(f'Generating {selected_side_description} {selection.site.upper()} Site execute on {selection.map} . . .', delete_after=60)
 
@@ -72,7 +75,7 @@ async def return_execute(interaction: discord.Interaction):
         await cache.evict(200)
 
 
-class MyView(discord.ui.View):
+class Lineup_View(discord.ui.View):
 
     @discord.ui.select(
         placeholder="Map",
@@ -119,8 +122,6 @@ class MyView(discord.ui.View):
         selection.set_site('Mid')
         await set_selected(interaction)
 
-    
-
 
 @bot.event
 async def on_ready():
@@ -128,7 +129,7 @@ async def on_ready():
 
 @bot.slash_command(description='Sends an execute for the popular fps game Counter Strike!!!!!')
 async def execute(ctx):
-    await ctx.respond(f"You still a crackr! ", view=MyView(), delete_after=600)
+    await ctx.respond("You still a crackr! ", view=Lineup_View(), delete_after=600)
 
 @bot.command()
 async def clear_history(ctx):
@@ -143,7 +144,7 @@ async def clear_history(ctx):
         index += 1
         
 
-def get_execute(map, site, side):
+async def get_execute(map, site, side):
     return execute_dict[map][side][site]
         
 
