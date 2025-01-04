@@ -2,11 +2,9 @@ import os
 import boto3
 import discord
 from classes.cache import Cache
-from dotenv import load_dotenv
 
 AWS_ACCESS_KEY = os.getenv('AWS_ACCESS_KEY')
 AWS_SECRET_KEY = os.getenv('AWS_SECRET_KEY')
-AWS_SESSION_TOKEN = os.getenv('AWS_SESSION_TOKEN')
 
 client = boto3.client(
     's3',
