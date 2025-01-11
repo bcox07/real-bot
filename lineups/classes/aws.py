@@ -22,8 +22,9 @@ except Exception as e:
 async def download_clip(cache: Cache, clip, map, location, nade_type):
     clip_location = os.path.join(cache.parent_directory, map.lower(), clip)
 
-    if (not cache.file_exists(clip_location)):
-        print(f'Buffer NOT found for {clip_location}. Downloading from S3...')
+    
+    if (cache.file_dict.get(clip_location, 'none') == 'none'):
+        print(f'Cached file NOT found for {clip_location}. Downloading from S3...')
         if not os.path.exists(os.path.dirname(clip_location)):
             os.makedirs(os.path.dirname(clip_location))
 

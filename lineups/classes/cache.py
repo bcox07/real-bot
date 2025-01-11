@@ -1,14 +1,27 @@
 import os
 
 class Cache:
-    def __init__(self):
-        self.parent_directory = './clips'
-        self.get_file_dict()
-        self.get_size()
-
+    def __init__(self, p = ''):
+        self._parent_directory = p
         print('Cache class initialized. . .')
+        print(f'parent_directory: {self._parent_directory}')
 
-    def get_file_dict(self):
+        if (len(self._parent_directory) > 0):
+            print(f'file_dict: {self.file_dict}')
+            print(f'size: {self.size}')
+
+    @property
+    def parent_directory(self):
+        print('parent_directory getter method called')
+        return self._parent_directory
+    
+    @parent_directory.setter
+    def parent_directory(self, directory):
+        self._parent_directory = directory
+
+    @property
+    def file_dict(self):
+        print('file_dict getter method called')
         file_dict = {}
         for dir_path, dir_names, file_names in os.walk(self.parent_directory):
             for file_name in file_names:           
@@ -20,13 +33,15 @@ class Cache:
         for file, value in file_dict:
             print(f'{file} - {value}')
 
-        print(f'get_file_dict set: {len(file_dict)}')
-        self.file_dict = dict((file_path, values) for file_path, values in file_dict)
+        return dict((file_path, values) for file_path, values in file_dict)
 
-    def file_exists(self, clip_location: str):
-        return self.file_dict.get(clip_location, 'none') != 'none'
+    @file_dict.setter
+    def file_dict(self, file_dict):
+        self._file_dict = file_dict
 
-    def get_size(self):
+    @property
+    def size(self):
+        print('size getter method called')
         size = 0
         for dirpath, dirnames, filenames in os.walk(self.parent_directory):
             for f in filenames:
@@ -34,7 +49,11 @@ class Cache:
                 size += (os.path.getsize(fp) / 1024 / 1024)
         
         print(f'get_size set: {size}')
-        self.size = size
+        return size
+    
+    @size.setter
+    def size(self, size):
+        self._size = size
 
     async def evict(self, max_size):
         if self.size > max_size:
@@ -48,6 +67,5 @@ class Cache:
                 os.remove(file_path)
                 updated_file_dict.pop(file_path)
                 print(f'File removed: {file_path} - {values}')                
-                self.get_size()
             
             self.file_dict = updated_file_dict

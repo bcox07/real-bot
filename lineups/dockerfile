@@ -1,8 +1,5 @@
 FROM python:3.14.0a3-bookworm
 
-
-COPY requirements.txt requirements.txt
-RUN pwd && ls -l
 COPY . .
 RUN pwd && ls -l
 

@@ -48,7 +48,7 @@ async def return_execute(interaction: discord.Interaction):
         execute_emojis += emoji
 
     await interaction.followup.send(content=f'{execute_emojis} for {selection.site} site', delete_after=600)
-    cache = Cache()
+    cache = Cache(os.getenv('CLIP_DIRECTORY'))
 
     for key, value in selected_execute.items():
         emoji = ''
@@ -68,7 +68,6 @@ async def return_execute(interaction: discord.Interaction):
             else:
                 await interaction.followup.send(f'No Smoke lineup for {selected_side_description} {selection.site.upper()} Site recorded yet. :frowning:', delete_after=600)
 
-    cache.get_size()
     print(f'Cache size utilized: {cache.size} MB')
 
     if cache.size > 200:
