@@ -17,10 +17,7 @@ class Cache:
                     file_dict[filepath] = {os.path.getatime(filepath), os.path.getsize(filepath)}
 
         file_dict = sorted(file_dict.items(), key=lambda x: x[1])
-        for file, value in file_dict:
-            print(f'{file} - {value}')
 
-        print(f'get_file_list set: {len(file_dict)}')
         self.file_dict = dict((file_path, values) for file_path, values in file_dict)
 
     def file_exists(self, clip_location: str):
@@ -33,7 +30,6 @@ class Cache:
                 fp = os.path.join(dirpath, f)
                 size += (os.path.getsize(fp) / 1024 / 1024)
         
-        print(f'get_size set: {size}')
         self.size = size
 
     async def evict(self, max_size):
@@ -47,7 +43,7 @@ class Cache:
 
                 os.remove(file_path)
                 updated_file_dict.pop(file_path)
-                print(f'File removed: {file_path} - {values}')                
+                print(f'File removed: {file_path}')                
                 self.get_size()
             
             self.file_dict = updated_file_dict

@@ -1,19 +1,21 @@
+from classes.enums import Map
+
 class Selection:
-    def __init__(self, map, site, side):
+    def __init__(self):
+        self.map = None
+        self.site = None
+        self.side = None
+
+    def set_map(self, map: Map):
         self.map = map
-        self.site = site
-        self.side = side
 
-    def set_map(self, map):
-        self.map = map
-
-    def set_site(self, site):
+    def set_site(self, site: str):
         self.site = site
 
-    def set_side(self, side):
+    def set_side(self, side: str):
         self.side = side
 
     async def reset(self):
-        self.map = ''
-        self.site = ''
-        self.side = '' 
+        self.map = None
+        self.site = None
+        self.side = None

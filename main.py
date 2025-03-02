@@ -1,20 +1,22 @@
 import os
 import discord
 
+from enum import Enum
 from dotenv import load_dotenv
-from classes.aws import download_clip
+from classes.aws import AWS_Connection
 from classes.cache import Cache
 from classes.selection import Selection
+from classes.enums import Nade, Map
 from executes import execute_dict
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 bot = discord.Bot(intents=discord.Intents.all())
 
-selection = Selection('', '', '')
+selection = Selection()
 
 async def set_selected(interaction: discord.Interaction):
-    if len(selection.map) > 0 and len(selection.site) > 0 and len(selection.side) > 0:
+    if selection.map is not None and selection.site is not None and selection.side is not None:
         await return_execute(interaction)
         await selection.reset()
     else:
@@ -29,11 +31,11 @@ async def return_execute(interaction: discord.Interaction):
     execute_emojis = ''
     for key, value in selected_execute.items():
         emoji = ''
-        if key.lower() == 'mollies':
+        if key.lower() == Nade.Molotov.name.lower():
             fire_emoji = '<:molly:1315925706437296178>'
             for x in range(len(value)):
                 emoji += fire_emoji
-        elif key.lower() == 'smokes':
+        elif key.lower() == Nade.Smoke.name.lower():
             smoke_emoji = '<:smoke:1315925707477614613>'
             for x in range(len(value)):
                 emoji += smoke_emoji
@@ -49,9 +51,9 @@ async def return_execute(interaction: discord.Interaction):
 
     for key, value in selected_execute.items():
         emoji = ''
-        if key.lower() == 'mollies':
+        if key.lower() == Nade.Molotov.name.lower():
             emoji = '<:molly:1315925706437296178>'
-        elif key.lower() == 'smokes':
+        elif key.lower() == Nade.Smoke.name.lower():
             emoji = '<:smoke:1315925707477614613>'
         else:
             emoji = '<:flash:1315925704998916217>'
@@ -59,7 +61,8 @@ async def return_execute(interaction: discord.Interaction):
         for nade in value:
             if len(nade['clip']) > 0:
 
-                clip = await download_clip(cache, nade['clip'], selection.map, nade['location'], key)
+                aws_connection = AWS_Connection(nade['clip'], selection.map, nade['location'], key)
+                clip = await aws_connection.download_clip(cache)
                 await interaction.followup.send(content=f'{emoji} for {nade['location']}', file=clip, delete_after=600)
                 
             else:
@@ -74,24 +77,20 @@ async def return_execute(interaction: discord.Interaction):
 
 class MyView(discord.ui.View):
 
+    map_options = []
+    for cs_map in Map:
+        map_options.append(discord.SelectOption(label=cs_map.name, value=str(cs_map.value)))
+
     @discord.ui.select(
         placeholder="Map",
         select_type=discord.ComponentType.string_select,
         row=0,
         min_values=1,
         max_values=1,
-        options = [
-            discord.SelectOption(label="Ancient", value="Ancient"),
-            discord.SelectOption(label="Anubis", value="Anubis"),
-            discord.SelectOption(label="Dust2", value="Dust2"),
-            discord.SelectOption(label="Inferno", value="Inferno"),
-            discord.SelectOption(label="Mirage", value="Mirage"),
-            discord.SelectOption(label="Nuke", value="Nuke"),
-            discord.SelectOption(label="Vertigo", value="Vertigo")
-        ]
+        options = map_options
     )
     async def select_callback(self, select, interaction):
-        selection.set_map(select.values[0])
+        selection.set_map(Map(int(select.values[0])))
         await set_selected(interaction)
 
     @discord.ui.button(label="Terrorist", row=1, style=discord.ButtonStyle.red)
@@ -128,7 +127,7 @@ async def on_ready():
 
 @bot.slash_command(description='Sends an execute for the popular fps game Counter Strike!!!!!')
 async def execute(ctx):
-    await ctx.respond(f"You still a crackr! ", view=MyView(), delete_after=600)
+    await ctx.respond('You still a crackr!', view=MyView(), delete_after=600)
 
 @bot.command()
 async def clear_history(ctx):
@@ -143,8 +142,8 @@ async def clear_history(ctx):
         index += 1
         
 
-def get_execute(map, site, side):
-    return execute_dict[map][side][site]
+def get_execute(map: Map, site, side):
+    return execute_dict[map.name][side][site]
         
 
 bot.run(TOKEN)
