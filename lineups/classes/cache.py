@@ -1,14 +1,27 @@
 import os
 
 class Cache:
-    def __init__(self):
-        self.parent_directory = 'clips'
-        self.get_file_dict()
-        self.get_size()
-
+    def __init__(self, p = ''):
+        self._parent_directory = p
         print('Cache class initialized. . .')
+        print(f'parent_directory: {self._parent_directory}')
 
-    def get_file_dict(self):
+        if (len(self._parent_directory) > 0):
+            print(f'file_dict: {self.file_dict}')
+            print(f'size: {self.size}')
+
+    @property
+    def parent_directory(self):
+        print('parent_directory getter method called')
+        return self._parent_directory
+    
+    @parent_directory.setter
+    def parent_directory(self, directory):
+        self._parent_directory = directory
+
+    @property
+    def file_dict(self):
+        print('file_dict getter method called')
         file_dict = {}
         for dir_path, dir_names, file_names in os.walk(self.parent_directory):
             for file_name in file_names:           
@@ -20,10 +33,13 @@ class Cache:
 
         self.file_dict = dict((file_path, values) for file_path, values in file_dict)
 
-    def file_exists(self, clip_location: str):
-        return self.file_dict.get(clip_location, 'none') != 'none'
+    @file_dict.setter
+    def file_dict(self, file_dict):
+        self._file_dict = file_dict
 
-    def get_size(self):
+    @property
+    def size(self):
+        print('size getter method called')
         size = 0
         for dirpath, dirnames, filenames in os.walk(self.parent_directory):
             for f in filenames:

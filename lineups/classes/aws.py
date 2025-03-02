@@ -4,7 +4,20 @@ import discord
 from classes.cache import Cache
 from classes.enums import Map
 
-s3 = boto3.client('s3')
+AWS_ACCESS_KEY = os.getenv('AWS_ACCESS_KEY')
+AWS_SECRET_KEY = os.getenv('AWS_SECRET_KEY')
+
+client = boto3.client(
+    's3',
+    aws_access_key_id=AWS_ACCESS_KEY,
+    aws_secret_access_key=AWS_SECRET_KEY
+)
+
+try:
+    response = client.list_buckets()
+    print("Boto3 S3 client is working correctly.")
+except Exception as e:
+    print("Error: ", e)
 
 class AWS_Connection:
     def __init__(self, clip: str, cs_map: Map, location: str, nade_type: str):
