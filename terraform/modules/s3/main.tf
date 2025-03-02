@@ -2,16 +2,17 @@ provider "aws" {
   region = "us-east-2"
 }
 
-resource "aws_s3_bucket" "lineup-clips1" {
-   bucket = "lineup-clips1"
+variable "s3_object_names" {
+  type    = list(string)
+  default = ["ancient/", "anubis/", "dust2/", "inferno/", "mirage/", "train/"]
 }
 
-resource "aws_s3_object" "lineup-clips-ancient" {
-  bucket = aws_s3_bucket.lineup-clips1.id
-  key    = "ancient/"
+resource "aws_s3_bucket" "lineup-clips2" {
+   bucket = "lineup-clips2"
 }
 
-resource "aws_s3_object" "lineup-clips-anubis" {
-  bucket = aws_s3_bucket.lineup-clips1.id
-  key    = "anubis/"
+resource "aws_s3_object" "lineup-clips-object" {
+  count = length(var.s3_object_names)
+  bucket = aws_s3_bucket.lineup-clips2.id
+  key = var.s3_object_names[count.index]
 }
