@@ -1,0 +1,4 @@
+FROM lineups-base-image
+
+COPY . .
+CMD ["python", "-u", "main.py"]

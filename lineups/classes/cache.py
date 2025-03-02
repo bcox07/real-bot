@@ -27,7 +27,7 @@ class Cache:
             for file_name in file_names:           
                 filepath = os.path.join(dir_path, file_name)
                 if os.path.isfile(filepath):
-                    file_dict[filepath] = {os.path.getatime(filepath), os.path.getsize(filepath)}
+                    file_dict[filepath] = (os.path.getatime(filepath), os.path.getsize(filepath))
 
         file_dict = sorted(file_dict.items(), key=lambda x: x[1])
 
@@ -50,7 +50,7 @@ class Cache:
 
     async def evict(self, max_size):
         if self.size > max_size:
-            updated_file_dict = dict((f, a) for f, a in self.file_dict.items())
+            updated_file_dict = dict(self.file_dict)
             for file_path, values in self.file_dict.items():
                 print(f'Size: {self.size} MB - Max Size: {max_size} MB')
                 if self.size < max_size:

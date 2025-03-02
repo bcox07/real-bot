@@ -1,7 +1,17 @@
 services:
+  base-image:
+    platform: linux/x86_64
+    build: 
+      context: .
+      dockerfile: dockerfile-base
   real-bot:
-    platform: linux/amd64
-    build: .
+    platform: linux/x86_64
+    build: 
+      context: .
+      dockerfile: dockerfile-final
+      no-cache: true
+    depends_on:
+      - base-image
     env_file:
       - .env
 

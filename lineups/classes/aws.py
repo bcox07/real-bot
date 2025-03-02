@@ -1,6 +1,8 @@
 import os
 import boto3
 import discord
+import imageio.v3 as iio
+from pygifsicle import optimize
 from classes.cache import Cache
 from classes.enums import Map
 
