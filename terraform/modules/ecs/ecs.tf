@@ -3,6 +3,10 @@ provider "aws" {
   profile = "superuser"
 }
 
+module "vpc" {
+  source = "../vpc"
+}
+
 resource "aws_ecs_cluster" "lineup_bot" {
     name = "lineup-bot"
 }
@@ -16,7 +20,7 @@ resource "aws_ecs_service" "lineup_bot" {
     network_configuration {
       assign_public_ip = true
       subnets = [
-        "subnet-09ec76bcb82192abe"
+        module.vpc.aws_subnet_id
       ]
     }
 }
