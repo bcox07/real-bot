@@ -1,7 +1,7 @@
 [
     {
         "name": "lineup-bot",
-        "image": "python:3.14.0a3-bookworm",
+        "image": "public.ecr.aws/docker/library/python:3.13.2-bookworm",
         "cpu": 256,
         "memory": 512,
         "portMappings": [

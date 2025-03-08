@@ -27,7 +27,7 @@ async def set_selected(interaction: discord.Interaction):
 
 async def return_execute(interaction: discord.Interaction):
     selected_side_description = 'Terrorist' if selection.side == 'T' else 'Counter Terrorist'
-    selected_execute = await get_execute(selection.map, selection.site, selection.side)
+    selected_execute = await get_execute(selection.map.name, selection.site, selection.side)
 
     await interaction.response.send_message(f'Generating {selected_side_description} {selection.site.upper()} Site execute on {selection.map} . . .', delete_after=60)
 

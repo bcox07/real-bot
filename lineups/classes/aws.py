@@ -37,7 +37,7 @@ class AWS_Connection:
             if not os.path.exists(os.path.dirname(clip_location)):
                 os.makedirs(os.path.dirname(clip_location))
 
-            s3.download_file('lineup-clips', f'{self.cs_map.name.lower()}/{self.clip}', clip_location)
+            client.download_file('lineup-clips', f'{self.cs_map.name.lower()}/{self.clip}', clip_location)
             cache.file_dict[clip_location] = {os.path.getatime(clip_location), os.path.getsize(clip_location)}
         else:
             print(f'Cached file found for {clip_location}. Using cache...')

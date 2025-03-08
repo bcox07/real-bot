@@ -9,7 +9,7 @@ services:
     build: 
       context: .
       dockerfile: dockerfile-final
-      no-cache: true
+      no_cache: true
     depends_on:
       - base-image
     env_file:

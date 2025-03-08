@@ -6,7 +6,7 @@ class Cache:
         print('Cache class initialized. . .')
         print(f'parent_directory: {self._parent_directory}')
 
-        if (len(self._parent_directory) > 0):
+        if self._parent_directory is not None and len(self._parent_directory) > 0:
             print(f'file_dict: {self.file_dict}')
             print(f'size: {self.size}')
 
