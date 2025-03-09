@@ -1,10 +1,10 @@
 import os
+import json
 import boto3
 import discord
-import imageio.v3 as iio
-from pygifsicle import optimize
 from classes.cache import Cache
 from classes.enums import Map
+from botocore.exceptions import ClientError
 
 AWS_ACCESS_KEY = os.getenv('AWS_ACCESS_KEY')
 AWS_SECRET_KEY = os.getenv('AWS_SECRET_KEY')
@@ -28,6 +28,32 @@ class AWS_Connection:
         self.location = location
         self.nade_type = nade_type
         print('AWS_Connection initialized. . .')
+
+    @staticmethod
+    def get_secret():
+
+        secret_name = "discord"
+        region_name = "us-east-2"
+
+        # Create a Secrets Manager client
+        session = boto3.session.Session()
+        client = session.client(
+            service_name='secretsmanager',
+            region_name=region_name
+        )
+
+        try:
+            get_secret_value_response = client.get_secret_value(
+                SecretId=secret_name
+            )
+        except ClientError as e:
+            # For a list of exceptions thrown, see
+            # https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+            raise e
+
+        secret = json.loads(get_secret_value_response['SecretString'])
+
+        return secret
 
     async def download_clip(self, cache: Cache):
         clip_location = os.path.join(cache.parent_directory, self.cs_map.name.lower(), self.clip)

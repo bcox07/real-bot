@@ -31,7 +31,8 @@ class Cache:
 
         file_dict = sorted(file_dict.items(), key=lambda x: x[1])
 
-        self.file_dict = dict((file_path, values) for file_path, values in file_dict)
+        self._file_dict = dict((file_path, values) for file_path, values in file_dict)
+        return self._file_dict
 
     @file_dict.setter
     def file_dict(self, file_dict):
@@ -40,13 +41,21 @@ class Cache:
     @property
     def size(self):
         print('size getter method called')
-        size = 0
+        self._size = 0
         for dirpath, dirnames, filenames in os.walk(self.parent_directory):
             for f in filenames:
                 fp = os.path.join(dirpath, f)
-                size += (os.path.getsize(fp) / 1024 / 1024)
+                self._size += (os.path.getsize(fp) / 1024 / 1024)
         
-        self.size = size
+        return self._size
+
+    @size.setter
+    def size(self, size): 
+        print('size setter method called')    
+        self._size = size
+
+    def file_exists(self, clip_location):
+        return os.path.exists(clip_location)
 
     async def evict(self, max_size):
         if self.size > max_size:
@@ -60,6 +69,5 @@ class Cache:
                 os.remove(file_path)
                 updated_file_dict.pop(file_path)
                 print(f'File removed: {file_path}')                
-                self.get_size()
             
             self.file_dict = updated_file_dict
