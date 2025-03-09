@@ -1,7 +1,7 @@
 [
     {
         "name": "lineup-bot",
-        "image": "public.ecr.aws/docker/library/python:3.13.2-bookworm",
+        "image": "160885261208.dkr.ecr.us-east-2.amazonaws.com/python/real-bot:latest",
         "cpu": 256,
         "memory": 512,
         "portMappings": [
@@ -14,7 +14,12 @@
             }
         ],
         "essential": true,
-        "environment": [],
+        "environment": [
+            {
+                "name": "CLIP_DIRECTORY",
+                "value": "clips"
+            }
+        ],
         "environmentFiles": [],
         "mountPoints": [],
         "volumesFrom": [],
