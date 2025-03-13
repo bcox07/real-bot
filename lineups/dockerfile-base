@@ -1,5 +1,5 @@
 FROM python:3.14.0a3-bookworm AS base
 
 RUN echo 'Installing packages . . . '
-RUN pip3 install py-cord boto3 audioop-lts python-dotenv asyncio awscli imageio pygifsicle json
+RUN pip3 install py-cord boto3 audioop-lts python-dotenv asyncio awscli imageio pygifsicle
 RUN echo 'Packages installed'

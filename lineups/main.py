@@ -1,10 +1,11 @@
 import os
+import json
 import discord
 import asyncio
 
 from enum import Enum
 from dotenv import load_dotenv
-from classes.aws import AWS_Connection
+from classes.aws import AWS_Connection, S3_Client
 from classes.cache import Cache
 from classes.selection import Selection
 from classes.enums import Nade, Map
@@ -13,10 +14,17 @@ from executes import execute_dict
 asyncio.set_event_loop(asyncio.new_event_loop())
 
 load_dotenv()
-TOKEN = AWS_Connection.get_secret()['DISCORD_TOKEN']
 bot = discord.Bot()
 
 selection = Selection()
+
+AWS_SECRET_STRING = json.loads(os.getenv('AWS_SECRET'))
+AWS_ACCESS_KEY = AWS_SECRET_STRING['S3_ACCESS_KEY']
+AWS_SECRET_KEY = AWS_SECRET_STRING['S3_SECRET_KEY']
+REGION_NAME = os.getenv('AWS_REGION')
+TOKEN = os.getenv('DISCORD_TOKEN')
+
+s3_connection = AWS_Connection(AWS_ACCESS_KEY, AWS_SECRET_KEY, REGION_NAME, 's3')
 
 async def set_selected(interaction: discord.Interaction):
     if selection.map is not None and selection.site is not None and selection.side is not None:
@@ -63,9 +71,8 @@ async def return_execute(interaction: discord.Interaction):
         
         for nade in value:
             if len(nade['clip']) > 0:
-
-                aws_connection = AWS_Connection(nade['clip'], selection.map, nade['location'], key)
-                clip = await aws_connection.download_clip(cache)
+                s3_client = S3_Client(s3_connection.client, nade['clip'], selection.map, nade['location'], key)
+                clip = await s3_client.download_clip(cache)
                 await interaction.followup.send(content=f'{emoji} for {nade['location']}', file=clip, delete_after=600)
                 
             else:
@@ -145,5 +152,4 @@ async def clear_history(ctx):
 async def get_execute(map, site, side):
     return execute_dict[map][side][site]
         
-
 bot.run(TOKEN)

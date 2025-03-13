@@ -15,10 +15,12 @@
         ],
         "essential": true,
         "environment": [
-            {
-                "name": "CLIP_DIRECTORY",
-                "value": "clips"
-            }
+            { "name": "CLIP_DIRECTORY","value": "clips" },
+            { "name": "AWS_REGION","value": "us-east-2" }
+        ],
+        "secrets": [
+            { "name": "DISCORD_TOKEN", "valueFrom": "arn:aws:secretsmanager:us-east-2:160885261208:secret:discord-E3r9yz" },
+            { "name": "AWS_SECRET", "valueFrom": "arn:aws:secretsmanager:us-east-2:160885261208:secret:s3-bQPCLB" }
         ],
         "environmentFiles": [],
         "mountPoints": [],
