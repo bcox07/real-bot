@@ -5,7 +5,7 @@ import asyncio
 
 from enum import Enum
 from dotenv import load_dotenv
-from classes.aws import AWS_Connection, S3_Client
+from classes.aws import AWS_Connection, S3_Client, DynamdDB_Client
 from classes.cache import Cache
 from classes.selection import Selection
 from classes.enums import Nade, Map
@@ -23,8 +23,10 @@ AWS_ACCESS_KEY = AWS_SECRET_STRING['S3_ACCESS_KEY']
 AWS_SECRET_KEY = AWS_SECRET_STRING['S3_SECRET_KEY']
 REGION_NAME = os.getenv('AWS_REGION')
 TOKEN = json.loads(os.getenv('DISCORD_TOKEN'))['DISCORD_TOKEN']
+print(TOKEN)
 
 s3_connection = AWS_Connection(AWS_ACCESS_KEY, AWS_SECRET_KEY, REGION_NAME, 's3')
+dynamodb_connection = AWS_Connection(AWS_ACCESS_KEY, AWS_SECRET_KEY, REGION_NAME, 'dynamodb')
 
 async def set_selected(interaction: discord.Interaction):
     if selection.map is not None and selection.site is not None and selection.side is not None:
@@ -85,7 +87,9 @@ async def return_execute_from_command(ctx, map: Map, side: str, site: str):
 
 async def return_execute(interaction: discord.Interaction):
     selected_side_description = 'Terrorist' if selection.side == 'T' else 'Counter Terrorist'
-    selected_execute = await get_execute(selection.map.name, selection.site, selection.side)
+    dynamodb_client = DynamdDB_Client(dynamodb_connection.client, 'Lineups')
+    selected_execute = await dynamodb_client.get_lineups(selection.map.name, selection.side, selection.site)
+    #selected_execute = await get_execute(selection.map.name, selection.site, selection.side)
 
     await interaction.response.send_message(f'Generating {selected_side_description} {selection.site.upper()} Site execute on {selection.map.name} . . .', delete_after=60)
     await interaction.followup.send(content=f'{get_execute_emojis(selected_execute)} for {selection.site} site', delete_after=600)
@@ -98,7 +102,12 @@ async def return_execute(interaction: discord.Interaction):
             if len(nade['clip']) > 0:
                 s3_client = S3_Client(s3_connection.client, nade['clip'], selection.map, nade['location'], key)
                 clip = await s3_client.download_clip(cache)
-                await interaction.followup.send(content=f'{emoji} for {nade['location']}', file=clip, delete_after=600)
+
+                try:
+                    await interaction.followup.send(content=f'{emoji} for {nade['location']}', file=clip, delete_after=600)
+                except Exception as e:
+                    #await interaction.followup.send('There was an issue attempting to send this clip. Wiwiwi', delete_after=600)
+                    print(e)
                 
             else:
                 await interaction.followup.send(f'No Smoke lineup for {selected_side_description} {selection.site.upper()} Site recorded yet. :frowning:', delete_after=600)
@@ -177,6 +186,13 @@ async def lineup(
 @bot.slash_command(description='Provides a UI for requesting a lineup')
 async def lineup_ui(ctx):
     await ctx.respond("What lineups do you want to learn?", view=Lineup_View(), delete_after=600)
+
+#@bot.command(description='Stores a clip to possibly be used in the lineup call')
+#async def add_clip(ctx, map: str, team: str, site: str):
+
+@bot.slash_command(description='Sends an execute for the popular fps game Counter Strike!!!!!')
+async def execute(ctx):
+    await ctx.respond("You still a crackr! ", view=Lineup_View(), delete_after=600)
 
 @bot.command()
 async def clear_history(ctx):

@@ -18,6 +18,36 @@ class AWS_Connection:
 
         print(f'AWS Connection initialized with {service}...')
 
+
+class DynamdDB_Client:
+    def __init__(self, client, table: str):
+        self.client = client
+        self.table  = table
+
+        try:
+            client.describe_table(TableName=table)
+            print('DynamoDb client initialized. . .')
+
+        except ClientError as ce:
+            if ce.response['Error']['Code'] == 'ResourceNotFoundException':
+                print(f'Table {table} does not exist. Create the table first and try again.')
+            else:
+                print(f'Unknown exception occurred while querying for the {table} table. Printing full error: {ce.response}')
+
+    async def get_lineups(self, map_name: str, team: str, site: str):
+        response = self.client.query(
+            TableName=self.table,
+            KeyConditionExpression='pk = :pk_val',
+            FilterExpression='Team = :team AND Site = :site',
+            ExpressionAttributeValues={
+                ':pk_val': {map_name: str},
+                ':team': {team: str},
+                ':site': {site: str},
+            }
+        )
+
+        return response
+
 class S3_Client:
     def __init__(self, client, clip: str, cs_map: Map, location: str, nade_type: str):
         self.client = client
@@ -32,7 +62,7 @@ class S3_Client:
         except Exception as e:
             print("Error: ", e)
 
-        print('AWS_Connection initialized. . .')
+        print('S3 client initialized. . .')
 
     async def download_clip(self, cache: Cache):
         clip_location = os.path.join(cache.parent_directory, self.cs_map.name.lower(), self.clip)

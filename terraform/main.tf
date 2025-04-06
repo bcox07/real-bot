@@ -26,6 +26,10 @@ module "s3" {
 //  source = "./modules/auto_scaling"
 //}
 
+module "dynamodb" {
+  source = "./modules/dynamo"
+}
+
 import {
   to = module.s3.aws_s3_bucket.lineup-clips
   id = "lineup-clips"
