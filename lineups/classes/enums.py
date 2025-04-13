@@ -15,3 +15,4 @@ class Map(Enum):
     Mirage = 5
     Nuke = 6
     Vertigo = 7
+    Train = 8

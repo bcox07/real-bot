@@ -3,8 +3,6 @@ import os
 class Cache:
     def __init__(self, p = ''):
         self._parent_directory = p
-        print('Cache class initialized. . .')
-        print(f'parent_directory: {self._parent_directory}')
 
         if self._parent_directory is not None and len(self._parent_directory) > 0:
             print(f'file_dict: {self.file_dict}')
@@ -12,7 +10,6 @@ class Cache:
 
     @property
     def parent_directory(self):
-        print('parent_directory getter method called')
         return self._parent_directory
     
     @parent_directory.setter
@@ -21,7 +18,6 @@ class Cache:
 
     @property
     def file_dict(self):
-        print('file_dict getter method called')
         file_dict = {}
         for dir_path, dir_names, file_names in os.walk(self.parent_directory):
             for file_name in file_names:           
@@ -40,7 +36,6 @@ class Cache:
 
     @property
     def size(self):
-        print('size getter method called')
         self._size = 0
         for dirpath, dirnames, filenames in os.walk(self.parent_directory):
             for f in filenames:
@@ -50,8 +45,7 @@ class Cache:
         return self._size
 
     @size.setter
-    def size(self, size): 
-        print('size setter method called')    
+    def size(self, size):  
         self._size = size
 
     def file_exists(self, clip_location):

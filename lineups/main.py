@@ -33,41 +33,66 @@ async def set_selected(interaction: discord.Interaction):
     else:
         await interaction.response.defer()
 
+def get_execute_emoji(nade: str):
+    fire_emoji = '<:molly:1315925706437296178>'
+    smoke_emoji = '<:smoke:1315925707477614613>'
+    flash_emoji = '<:flash:1315925704998916217>'
+
+    print(f'Nade name: {nade.upper()}')
+
+    if nade.upper() == Nade.Molotov.name.upper():
+        return fire_emoji
+    elif nade.upper() == Nade.Smoke.name.upper():
+        return smoke_emoji
+    elif nade.upper() == Nade.Flash.name.upper():
+        return flash_emoji
+    else:
+        print('Invalid nade submitted for emoji')
+        return flash_emoji
+
+def get_execute_emojis(selected_execute: dict[str, str]):
+    execute_emojis = ''
+    for key, value in selected_execute.items():
+        nade_emoji = get_execute_emoji(key)
+        for x in range(len(value)):
+                execute_emojis += nade_emoji
+
+    return execute_emojis
+
+async def return_execute_from_command(ctx, map: Map, side: str, site: str):
+    selected_side_description = 'Terrorist' if side == 'T' else 'Counter Terrorist'
+    print(f'Map: {map.name}')
+    print(f'Site: {site}')
+    print(f'Side: {side}')
+
+    selected_execute = await get_execute(map.name, site, side)
+
+    await ctx.respond(f'Generating {selected_side_description} {site} Site execute on {map.name} . . .', delete_after=60)
+    await ctx.respond(content=f'{get_execute_emojis(selected_execute)} for {site} site', delete_after=600)
+
+    cache = Cache(os.getenv('CLIP_DIRECTORY'))
+    for key, value in selected_execute.items():
+        emoji = get_execute_emoji(key)
+        
+        for nade in value:
+            if len(nade['clip']) > 0:
+                s3_client = S3_Client(s3_connection.client, nade['clip'], map, nade['location'], key)
+                clip = await s3_client.download_clip(cache)
+                await ctx.respond(content=f'{emoji} for {nade['location']}', file=clip, delete_after=600)
+                
+            else:
+                await ctx.respond(f'No Smoke lineup for {selected_side_description} {site} Site recorded yet. :frowning:', delete_after=600)
+
 async def return_execute(interaction: discord.Interaction):
     selected_side_description = 'Terrorist' if selection.side == 'T' else 'Counter Terrorist'
     selected_execute = await get_execute(selection.map.name, selection.site, selection.side)
 
     await interaction.response.send_message(f'Generating {selected_side_description} {selection.site.upper()} Site execute on {selection.map.name} . . .', delete_after=60)
+    await interaction.followup.send(content=f'{get_execute_emojis(selected_execute)} for {selection.site} site', delete_after=600)
 
-    execute_emojis = ''
-    for key, value in selected_execute.items():
-        emoji = ''
-        if key.lower() == Nade.Molotov.name.lower():
-            fire_emoji = '<:molly:1315925706437296178>'
-            for x in range(len(value)):
-                emoji += fire_emoji
-        elif key.lower() == Nade.Smoke.name.lower():
-            smoke_emoji = '<:smoke:1315925707477614613>'
-            for x in range(len(value)):
-                emoji += smoke_emoji
-        else:
-            flash_emoji = '<:flash:1315925704998916217>'
-            for x in range(len(value)):
-                emoji += flash_emoji
-
-        execute_emojis += emoji
-
-    await interaction.followup.send(content=f'{execute_emojis} for {selection.site} site', delete_after=600)
     cache = Cache(os.getenv('CLIP_DIRECTORY'))
-
     for key, value in selected_execute.items():
-        emoji = ''
-        if key.lower() == Nade.Molotov.name.lower():
-            emoji = '<:molly:1315925706437296178>'
-        elif key.lower() == Nade.Smoke.name.lower():
-            emoji = '<:smoke:1315925707477614613>'
-        else:
-            emoji = '<:flash:1315925704998916217>'
+        emoji = get_execute_emoji(key)
         
         for nade in value:
             if len(nade['clip']) > 0:
@@ -127,14 +152,31 @@ class Lineup_View(discord.ui.View):
         selection.set_site('Mid')
         await set_selected(interaction)
 
+async def get_maps(ctx: discord.AutocompleteContext):
+    return [map.name for map in Map]
+
+async def get_sides(ctx: discord.AutocompleteContext):
+    return ['T', 'CT']
+
+async def get_sites(ctx: discord.AutocompleteContext):
+    return ['A', 'B', 'Mid']
 
 @bot.event
 async def on_ready():
     print(f"{bot.user} is ready and online!")
 
-@bot.slash_command(description='Sends an execute for the popular fps game Counter Strike!!!!!')
-async def execute(ctx):
-    await ctx.respond("You still a crackr! ", view=Lineup_View(), delete_after=600)
+@bot.command(description='Request a lineup')
+async def lineup(
+    ctx,
+    map: discord.Option(str, autocomplete=discord.utils.basic_autocomplete(get_maps)),
+    side: discord.Option(str, autocomplete=discord.utils.basic_autocomplete(get_sides)),
+    site: discord.Option(str, autocomplete=discord.utils.basic_autocomplete(get_sites)),
+):
+    await return_execute_from_command(ctx, Map[map], side, site)
+
+@bot.slash_command(description='Provides a UI for requesting a lineup')
+async def lineup_ui(ctx):
+    await ctx.respond("What lineups do you want to learn?", view=Lineup_View(), delete_after=600)
 
 @bot.command()
 async def clear_history(ctx):

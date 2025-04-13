@@ -22,7 +22,11 @@ module "s3" {
   source = "./modules/s3"
 }
 
+//module "auto_scaling" {
+//  source = "./modules/auto_scaling"
+//}
+
 import {
-  to = module.s3.aws_s3_bucket.lineup-clips2
-  id = "lineup-clips2"
+  to = module.s3.aws_s3_bucket.lineup-clips
+  id = "lineup-clips"
 }
