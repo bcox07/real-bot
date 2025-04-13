@@ -35,29 +35,28 @@ async def set_selected(interaction: discord.Interaction):
     else:
         await interaction.response.defer()
 
-def get_execute_emoji(nade: str):
+def get_execute_emoji(nade):
     fire_emoji = '<:molly:1315925706437296178>'
     smoke_emoji = '<:smoke:1315925707477614613>'
     flash_emoji = '<:flash:1315925704998916217>'
 
-    print(f'Nade name: {nade.upper()}')
+    print(f'Nade name: {nade.get('S').upper()}')
 
-    if nade.upper() == Nade.Molotov.name.upper():
+    if nade.get('S').upper() == Nade.Molotov.name.upper():
         return fire_emoji
-    elif nade.upper() == Nade.Smoke.name.upper():
+    elif nade.get('S').upper() == Nade.Smoke.name.upper():
         return smoke_emoji
-    elif nade.upper() == Nade.Flash.name.upper():
+    elif nade.get('S').upper() == Nade.Flash.name.upper():
         return flash_emoji
     else:
         print('Invalid nade submitted for emoji')
         return flash_emoji
 
-def get_execute_emojis(selected_execute: dict[str, str]):
+def get_execute_emojis(selected_execute):
     execute_emojis = ''
-    for key, value in selected_execute.items():
-        nade_emoji = get_execute_emoji(key)
-        for x in range(len(value)):
-                execute_emojis += nade_emoji
+    for index in selected_execute:
+        nade_emoji = get_execute_emoji(index.get('Type'))
+        execute_emojis += nade_emoji             
 
     return execute_emojis
 
@@ -91,26 +90,31 @@ async def return_execute(interaction: discord.Interaction):
     selected_execute = await dynamodb_client.get_lineups(selection.map.name, selection.side, selection.site)
     #selected_execute = await get_execute(selection.map.name, selection.site, selection.side)
 
+    print(selected_execute.items())
     await interaction.response.send_message(f'Generating {selected_side_description} {selection.site.upper()} Site execute on {selection.map.name} . . .', delete_after=60)
-    await interaction.followup.send(content=f'{get_execute_emojis(selected_execute)} for {selection.site} site', delete_after=600)
+    await interaction.followup.send(content=f'{get_execute_emojis(selected_execute.get('Items'))} for {selection.site} site', delete_after=600)
 
     cache = Cache(os.getenv('CLIP_DIRECTORY'))
-    for key, value in selected_execute.items():
-        emoji = get_execute_emoji(key)
+    for value in selected_execute.get('Items'):
+        emoji = get_execute_emoji(value.get('Type'))
         
-        for nade in value:
-            if len(nade['clip']) > 0:
-                s3_client = S3_Client(s3_connection.client, nade['clip'], selection.map, nade['location'], key)
-                clip = await s3_client.download_clip(cache)
+        if len(value.get('URI')) > 0:
+            s3_client = S3_Client(
+                s3_connection.client,
+                value.get('URI')['S'],
+                selection.map,
+                value.get('Location')['S'],
+                value.get('Type')['S'])
+            clip = await s3_client.download_clip(cache)
 
-                try:
-                    await interaction.followup.send(content=f'{emoji} for {nade['location']}', file=clip, delete_after=600)
-                except Exception as e:
-                    #await interaction.followup.send('There was an issue attempting to send this clip. Wiwiwi', delete_after=600)
-                    print(e)
-                
-            else:
-                await interaction.followup.send(f'No Smoke lineup for {selected_side_description} {selection.site.upper()} Site recorded yet. :frowning:', delete_after=600)
+            try:
+                await interaction.followup.send(content=f'{emoji} for {value.get('Location')['S']}', file=clip, delete_after=600)
+            except Exception as e:
+                #await interaction.followup.send('There was an issue attempting to send this clip. Wiwiwi', delete_after=600)
+                print(e)
+            
+        else:
+            await interaction.followup.send(f'No Smoke lineup for {selected_side_description} {selection.site.upper()} Site recorded yet. :frowning:', delete_after=600)
 
     print(f'Cache size utilized: {cache.size} MB')
 
@@ -187,7 +191,7 @@ async def lineup(
 async def lineup_ui(ctx):
     await ctx.respond("What lineups do you want to learn?", view=Lineup_View(), delete_after=600)
 
-#@bot.command(description='Stores a clip to possibly be used in the lineup call')
+#@bot.command(description='Stores a clip to possibly be used in the lineup request')
 #async def add_clip(ctx, map: str, team: str, site: str):
 
 @bot.slash_command(description='Sends an execute for the popular fps game Counter Strike!!!!!')

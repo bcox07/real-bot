@@ -37,12 +37,12 @@ class DynamdDB_Client:
     async def get_lineups(self, map_name: str, team: str, site: str):
         response = self.client.query(
             TableName=self.table,
-            KeyConditionExpression='pk = :pk_val',
+            KeyConditionExpression='CS_Map = :pk_val',
             FilterExpression='Team = :team AND Site = :site',
             ExpressionAttributeValues={
-                ':pk_val': {map_name: str},
-                ':team': {team: str},
-                ':site': {site: str},
+                ':pk_val': {'S': map_name},
+                ':team': {'S': team},
+                ':site': {'S': site},
             }
         )
 
@@ -65,17 +65,17 @@ class S3_Client:
         print('S3 client initialized. . .')
 
     async def download_clip(self, cache: Cache):
-        clip_location = os.path.join(cache.parent_directory, self.cs_map.name.lower(), self.clip)
+        clip_location = os.path.join(cache.parent_directory, self.cs_map.name.lower(), os.path.basename(self.clip))
 
         if (not cache.file_exists(clip_location)):
             print(f'Buffer NOT found for {clip_location}. Downloading from S3...')
             if not os.path.exists(os.path.dirname(clip_location)):
                 os.makedirs(os.path.dirname(clip_location))
 
-            self.client.download_file('lineup-clips', f'{self.cs_map.name.lower()}/{self.clip}', clip_location)
+            self.client.download_file('lineup-clips', f'{self.cs_map.name.lower()}/{os.path.basename(self.clip)}', clip_location)
             cache.file_dict[clip_location] = {os.path.getatime(clip_location), os.path.getsize(clip_location)}
         else:
             print(f'Cached file found for {clip_location}. Using cache...')
 
         with open(clip_location, 'rb') as file:
-            return discord.File(file, f'{'Smoke' if self.nade_type == 'Smokes' else 'Molly' if self.nade_type == 'Mollies' else 'Flash'}-for-{self.location}.gif')
+            return discord.File(file, f'{'Smoke' if self.nade_type == 'Smoke' else 'Molly' if self.nade_type == 'Molotov' else 'Flash'}-for-{self.location}.gif')
